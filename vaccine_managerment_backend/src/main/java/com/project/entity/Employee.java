@@ -27,6 +27,6 @@ public class Employee {
     @JoinColumn(name = "position_id",nullable = false)
     private Position position;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id",insertable=true,updatable=true)
     private Account account;
 }

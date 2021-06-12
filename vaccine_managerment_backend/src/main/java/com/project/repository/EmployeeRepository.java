@@ -82,9 +82,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
      * @param account
      * @param delete_flag
      */
+
+    @Transactional
     @Modifying
-    @Query(value = "insert into employee(name,date_of_birth,id_card," +
-            "address,phone,position_id,account_id,delete_flag) values (?1,?2,?3,?4,?5,?6,?7,?8)", nativeQuery = true)
+    @Query(value = "insert into employee(name,date_of_birth,id_card,address,phone,position_id,account_id,delete_flag) values (?1,?2,?3,?4,?5,?6,?7,?8)", nativeQuery = true)
     void createNewEmployee(String name, String dateOfBirth, String idCard,
                            String address, String phone, Integer position, Integer account,Boolean delete_flag);
 

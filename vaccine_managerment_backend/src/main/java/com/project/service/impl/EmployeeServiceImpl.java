@@ -59,8 +59,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void createNewEmployee(EmployeeDto employeeDto) throws MessagingException {
-
-        employeeRepository.createNewEmployee(employeeDto.getName(), employeeDto.getDateOfBirth(), employeeDto.getIdCard(), employeeDto.getAddress(), employeeDto.getPhone(), employeeDto.getPosition(), employeeDto.getAccount(), false);
         Account account = new Account();
         account.setUserName(employeeDto.getIdCard());
         account.setEncryptPw(encoder.encode("123"));
@@ -68,6 +66,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         accountService.addNew(employeeDto.getIdCard(), encoder.encode("123"));
         int id = accountService.findIdUserByUserName(employeeDto.getIdCard());
         roleService.setDefaultRole(id, employeeDto.getAccount());
+        employeeRepository.createNewEmployee(employeeDto.getName(), employeeDto.getDateOfBirth(),
+                employeeDto.getIdCard(), employeeDto.getAddress(), employeeDto.getPhone(),
+                employeeDto.getPosition(), id, false);
     }
 
     @Override
