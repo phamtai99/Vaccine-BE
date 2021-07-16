@@ -11,6 +11,9 @@ import com.project.service.EmployeeService;
 import com.project.service.PositionService;
 import com.project.service.RoleService;
 import com.project.validation.EmployeeCreateByRequestDtoValidator;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.project.dto.EmployeeDto;
 import org.springframework.http.HttpStatus;
@@ -39,6 +42,8 @@ public class EmployeeController {
     private RoleService roleService;
     @Autowired
     private EmployeeCreateByRequestDtoValidator employeeCreateByRequestDtoValidator;
+
+    private static Logger logger= LogManager.getLogger(EmployeeController.class);
 
     /*
      * Hien thi danh sach nhan vien
@@ -134,11 +139,13 @@ public class EmployeeController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<?> createVaccinations(@Valid @RequestBody EmployeeDto employeeDto, BindingResult
             bindingResult) throws MessagingException {
+        logger.debug(" Method to create employee from admin");
         employeeCreateByRequestDtoValidator.validate(employeeDto, bindingResult);
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
         }
         employeeService.createNewEmployee(employeeDto);
+        logger.debug(" Create employee success !");
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 

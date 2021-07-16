@@ -13,7 +13,9 @@ import com.project.service.AccountService;
 import com.project.service.PatientService;
 import com.project.service.RoleService;
 import com.project.service.impl.AccountDetailsImpl;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/public")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SecurityController {
-    private static Logger logger=Logger.getLogger(SecurityController.class);
+    private static Logger logger= LogManager.getLogger(SecurityController.class);
     @Autowired
     private JwtUtility jwtUtility;
     @Autowired
@@ -52,7 +54,7 @@ public class SecurityController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-       logger.info("API to login into System ");
+        logger.info("API to login into System ");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -83,6 +85,7 @@ public class SecurityController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) throws MessagingException, UnsupportedEncodingException {
+
         if (accountService.existsById(signUpRequest.getBookId())) {
             return ResponseEntity
                     .badRequest()

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="patternLayout">%d{yyyy-MM-dd HH:mm:ss a} %-5level [%t] %logger{36}.%M : %msg%n</Property>
+        <Property name="maxSize">5 MB</Property>
+        <Property name="maxFile">20</Property>
+        <Property name="logPath">logs</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss a} %highlight{%-5level} [%t] %logger{36}.%M : %msg%n"/>
+        </Console>
+        <RollingFile name="logfile" fileName="${logPath}/log.log"
+                     filePattern="${logPath}/%d{yyyy-MM-dd}/log.%i.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss a} %-5level [%t] %logger{36}.%M : %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="${maxSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxFile}"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logfile"/>
+        </Root>
+    </Loggers>
+</Configuration>

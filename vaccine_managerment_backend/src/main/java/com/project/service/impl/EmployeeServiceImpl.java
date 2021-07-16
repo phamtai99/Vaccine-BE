@@ -57,14 +57,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findEmployeeByIdAndNameAndPosition(nameSearch, idEmpSearch, positionSearch);
     }
 
+
+    /*
+     * Method to create employee from admin
+     * @param EmployeeDto
+     * 12/6/2021
+     * */
     @Override
     public void createNewEmployee(EmployeeDto employeeDto) throws MessagingException {
-        Account account = new Account();
-        account.setUserName(employeeDto.getIdCard());
-        account.setEncryptPw(encoder.encode("123"));
-        account.setEnabled(true);
-        accountService.addNew(employeeDto.getIdCard(), encoder.encode("123"));
-        int id = accountService.findIdUserByUserName(employeeDto.getIdCard());
+        Account account = new Account(employeeDto.getIdCard(), encoder.encode("123"));
+        accountService.addNew(account.getUserName(), account.getEncryptPw());
+        int id = accountService.findIdUserByUserName(account.getUserName());
         roleService.setDefaultRole(id, employeeDto.getAccount());
         employeeRepository.createNewEmployee(employeeDto.getName(), employeeDto.getDateOfBirth(),
                 employeeDto.getIdCard(), employeeDto.getAddress(), employeeDto.getPhone(),
