@@ -1,4 +1,11 @@
 
+
+
+
+#Code ví dụ truy vấn db với entityManager 
+https://stackjava.com/hibernate/code-vi-du-truy-van-hibernate-voi-entitymanger-entitymanagerfactory.html
+
+
 # Vaccine_managerment
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.12.
