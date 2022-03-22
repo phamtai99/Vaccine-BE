@@ -72,7 +72,8 @@ public class VaccinationController {
      */
     @PostMapping("/get-total-page")
     public ResponseEntity<Integer> findTotalPage(@RequestBody PeriodicalSearchDataDTO searchData) {
-        return new ResponseEntity<>((int) this.vaccinationService.getTotalPage(searchData), HttpStatus.OK);
+        int x=(int) this.vaccinationService.getTotalPage(searchData);
+        return new ResponseEntity<>(x, HttpStatus.OK);
     }
     /**
      *get the search periodical vaccination result

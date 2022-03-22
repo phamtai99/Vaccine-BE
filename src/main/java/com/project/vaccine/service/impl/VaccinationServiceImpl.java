@@ -71,6 +71,7 @@ public class VaccinationServiceImpl implements VaccinationService {
     /**
      *get the total page of search data
      */
+
     @Override
     public double getTotalPage(PeriodicalSearchDataDTO searchData) {
         if (searchData.getDate().equals("")) {

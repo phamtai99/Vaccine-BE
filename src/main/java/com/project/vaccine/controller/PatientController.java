@@ -26,7 +26,7 @@ public class PatientController {
     private PatientByRequestDTOValidator patientByRequestDTOValidator;
     
     @GetMapping("/list")
-    public ResponseEntity<Page<Patient>> getListPatient(@PageableDefault(size = 5) Pageable pageable) {
+    public ResponseEntity<Page<Patient>> getListPatient(@PageableDefault(size = 8) Pageable pageable) {
         Page<Patient> listPatient = patientService.findAllPatient2(pageable);
         return new ResponseEntity<>(listPatient, HttpStatus.OK);
     }

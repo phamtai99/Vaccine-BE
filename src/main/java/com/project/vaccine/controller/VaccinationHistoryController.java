@@ -141,7 +141,7 @@ public class VaccinationHistoryController {
 
 
     @RequestMapping(value = "/registered-for-vaccination/list", method = RequestMethod.GET)
-    public ResponseEntity<Page<VaccinationHistory>> getAllRegisteredVaccination(@PageableDefault(size = 5) Pageable pageable,
+    public ResponseEntity<Page<VaccinationHistory>> getAllRegisteredVaccination(@PageableDefault(size = 8) Pageable pageable,
                                                                                 @RequestParam(defaultValue = "") String name,
                                                                                 @RequestParam Integer id) {
         Page<VaccinationHistory> list = vaccinationHistoryService.getAllRegisteredRequired(name, id, pageable);
