@@ -50,11 +50,11 @@ public class VaccinationHistoryController {
 
     /**
      *
-     *
+     *Lấy danh sách bệnh nhân đăng kí tiêm chủng định kỳ của chung tâm
      * @return
      */
     @RequestMapping(value = "/periodic-vaccination/list", method = RequestMethod.GET)
-    public ResponseEntity<Page<VaccinationHistory>> findAllPeriodicVaccination(@PageableDefault(size = 5) Pageable
+    public ResponseEntity<Page<VaccinationHistory>> findAllPeriodicVaccination(@PageableDefault(size = 10) Pageable
                                                                                        pageable) {
         Page<VaccinationHistory> list = vaccinationHistoryService.finAllPeriodicVaccination(pageable);
         if (list.isEmpty()) {

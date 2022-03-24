@@ -34,7 +34,7 @@ public class ImportExportController {
      * hiển thị list vaccine
      */
     @PostMapping("/vaccine-price-list")
-    public ResponseEntity<?> listPriceVaccine(@PageableDefault(size = 5) Pageable pageable
+    public ResponseEntity<?> listPriceVaccine(@PageableDefault(size = 10) Pageable pageable
     ) {
         return new ResponseEntity<>(importAndExportService.findAll("export", pageable), HttpStatus.OK);
     }
@@ -43,7 +43,7 @@ public class ImportExportController {
      * tìm kiếm , phân trang, hiển thị list vaccine
      */
     @PostMapping("/vaccine-price-search")
-    public ResponseEntity<?> searchVaccinePrice(@PageableDefault(size = 5) Pageable pageable,
+    public ResponseEntity<?> searchVaccinePrice(@PageableDefault(size = 10) Pageable pageable,
                                                 @RequestBody SearchCriteria searchCriteria) {
         String keyWordForSearchVaccineType = "";
         String keyWordForSearchVaccineOrigin = "";

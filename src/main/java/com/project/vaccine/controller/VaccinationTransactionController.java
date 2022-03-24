@@ -28,7 +28,7 @@ public class VaccinationTransactionController {
      *phân trang, tìm kiếm , hiển thị list giao dịch
      */
     @GetMapping({"/vaccine-transaction-list"})
-    public ResponseEntity<?> listVaccineTransaction(@PageableDefault(size = 5) Pageable pageable) {
+    public ResponseEntity<?> listVaccineTransaction(@PageableDefault(size = 10) Pageable pageable) {
         return new ResponseEntity<>(vaccinationTransactionService.findAll(pageable), HttpStatus.OK);
     }
 
@@ -36,7 +36,7 @@ public class VaccinationTransactionController {
      * tìm kiếm , phân trang, hiển thị list tìm kiếm giao dịch
      */
     @PostMapping("/vaccine-transaction-search")
-    public ResponseEntity<?> searchVaccineTransaction(@PageableDefault(size = 5) Pageable pageable,
+    public ResponseEntity<?> searchVaccineTransaction(@PageableDefault(size = 10) Pageable pageable,
                                                       @RequestBody SearchCriteria searchCriteria) {
         String keyWordForSearchNamePatient = "";
         String keyWordForSearchVaccineType = "";
