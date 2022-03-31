@@ -51,7 +51,7 @@ public class VaccinationByRequest {
      * Tìm kiếm + Phân trang
      **/
     @GetMapping(value = "/public/vaccine/list")
-    public ResponseEntity<Page<Vaccine>> getListVaccine(@PageableDefault(size = 5) Pageable pageable,
+    public ResponseEntity<Page<Vaccine>> getListVaccine(@PageableDefault(size = 10) Pageable pageable,
                                                         @RequestParam(defaultValue = "") String name,
                                                         @RequestParam(defaultValue = "") String vaccineTypeName,
                                                         @RequestParam(defaultValue = "") String origin,

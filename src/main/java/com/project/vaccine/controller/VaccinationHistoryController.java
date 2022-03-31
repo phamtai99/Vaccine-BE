@@ -32,7 +32,7 @@ public class VaccinationHistoryController {
      * lấy danh lịch sử tiêm chủng, phân trang , tìm kiếm
      **/
     @RequestMapping(value = "/vaccination-history", method = RequestMethod.GET)
-    public ResponseEntity<Page<VaccinationHistory>> findAllVaccinationHistory(@PageableDefault(size = 5) Pageable pageable,
+    public ResponseEntity<Page<VaccinationHistory>> findAllVaccinationHistory(@PageableDefault(size =10) Pageable pageable,
                                                                               @RequestParam(defaultValue = "") String vaccineName,
                                                                               @RequestParam(defaultValue = "") String vaccinationDate,
                                                                               @RequestParam(defaultValue = "") Integer patientId) {

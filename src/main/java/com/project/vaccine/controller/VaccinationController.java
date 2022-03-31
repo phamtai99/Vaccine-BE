@@ -7,6 +7,10 @@ import com.project.vaccine.service.AccountService;
 import com.project.vaccine.service.VaccinationHistoryService;
 import com.project.vaccine.service.VaccinationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -86,6 +90,22 @@ public class VaccinationController {
         }
         return new ResponseEntity<>(registrableVaccinationList, HttpStatus.OK);
     }
+
+
+//    @PostMapping("/get-custom-list")
+//    public ResponseEntity<?> findCustomList(
+//                                             @RequestBody PeriodicalSearchDataDTO searchData) {
+//        List<RegistrablePeriodicalVaccinationDTO> registrableVaccinationList = this.vaccinationService.findCustomVaccination(searchData);
+//        if (registrableVaccinationList.size() == 0) {
+//            return new ResponseEntity<>(registrableVaccinationList,HttpStatus.NO_CONTENT);
+//        }
+//        Pageable pageable1 = PageRequest.of(0, 5);
+//        int start = (int) pageable1.getOffset();
+//        int end = Math.min((start + pageable1.getPageSize()), registrableVaccinationList.size());
+//        Page<RegistrablePeriodicalVaccinationDTO> pages = new PageImpl<RegistrablePeriodicalVaccinationDTO>(registrableVaccinationList.subList(start, end), pageable1, registrableVaccinationList.size());
+//
+//        return new ResponseEntity<>(pages, HttpStatus.OK);
+//    }
     /**
     *
     */

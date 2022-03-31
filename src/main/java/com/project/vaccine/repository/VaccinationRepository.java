@@ -89,8 +89,8 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
             "and vaccination.end_time like ?4  " +
             "and vaccine.name like ?5  " +
             "and vaccination.description like ?6 " +
-            "and vaccination.delete_flag = 0 LIMIT ?7,5", nativeQuery = true)
-    List<RegistrablePeriodicalVaccinationDTO> findCustomListWithPageWithDate(String age, String date, String startTime, String endTime, String vaccineName, String description, int offset);
+            "and vaccination.delete_flag = 0 ", nativeQuery = true)
+    List<RegistrablePeriodicalVaccinationDTO> findCustomListWithPageWithDate(String age, String date, String startTime, String endTime, String vaccineName, String description);
 
     /**
      *get the list for search data without date
@@ -108,7 +108,7 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
             "and vaccination.end_time like ?3  " +
             "and vaccine.name like ?4  " +
             "and vaccination.description like ?5 " +
-            "and vaccination.delete_flag = 0 LIMIT ?6,5", nativeQuery = true)
-    List<RegistrablePeriodicalVaccinationDTO> findCustomListWithPageWithoutDate(String age, String startTime, String endTime, String vaccineName, String description, int offset);
+            "and vaccination.delete_flag = 0 ", nativeQuery = true)
+    List<RegistrablePeriodicalVaccinationDTO> findCustomListWithPageWithoutDate(String age, String startTime, String endTime, String vaccineName, String description);
 
 }

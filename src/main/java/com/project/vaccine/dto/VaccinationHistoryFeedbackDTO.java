@@ -8,6 +8,8 @@ public interface VaccinationHistoryFeedbackDTO {
     String getPatientGuardian();
     String getPatientAddress();
     String getPatientPhone();
+    String getExpired();
+    String getName();
     String getVaccineTypeName();
     String getVaccinationDate();
     String getVaccineHistoryAfterStatus();

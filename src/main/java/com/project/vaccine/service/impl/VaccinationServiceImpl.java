@@ -89,10 +89,10 @@ public class VaccinationServiceImpl implements VaccinationService {
     public List<RegistrablePeriodicalVaccinationDTO> findCustomVaccination(PeriodicalSearchDataDTO searchData) {
         if (searchData.getDate().equals("")) {
             return this.vaccinationRepository.findCustomListWithPageWithoutDate('%'+searchData.getAge()+'%', '%'+searchData.getStartTime()+'%', '%'+searchData.getEndTime()+'%',
-                    '%'+searchData.getVaccineName()+'%','%'+ searchData.getDescription()+ '%', (searchData.getCurrentPage()-1)*5);
+                    '%'+searchData.getVaccineName()+'%','%'+ searchData.getDescription()+ '%');
         } else {
             return this.vaccinationRepository.findCustomListWithPageWithDate('%'+searchData.getAge()+'%', '%'+searchData.getDate()+'%', '%'+searchData.getStartTime()+'%', '%'+searchData.getEndTime()+'%',
-                    '%'+searchData.getVaccineName()+'%','%'+ searchData.getDescription()+ '%', (searchData.getCurrentPage()-1)*5);
+                    '%'+searchData.getVaccineName()+'%','%'+ searchData.getDescription()+ '%');
         }
     }
     /**
