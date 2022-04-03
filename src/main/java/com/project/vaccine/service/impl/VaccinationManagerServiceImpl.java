@@ -1,9 +1,12 @@
 package com.project.vaccine.service.impl;
 
+import com.project.vaccine.controller.SecurityController;
 import com.project.vaccine.dto.VaccinationManagerDto;
 import com.project.vaccine.entity.Vaccination;
 import com.project.vaccine.repository.VaccinationManagerRepository;
 import com.project.vaccine.service.VaccinationManagerService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,10 +14,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class VaccinationManagerServiceImpl implements VaccinationManagerService {
+
+    private static Logger logger= LogManager.getLogger(SecurityController.class);
     @Autowired
     private VaccinationManagerRepository vaccinationManagerRepository;
 
@@ -30,8 +36,14 @@ public class VaccinationManagerServiceImpl implements VaccinationManagerService 
      * tìm kiếm và phân trang
      */
     @Override
-    public Page<Vaccination> searchAllVaccinationManager(String startDate, String endDate, String name, String status, int pageable, int type) {
-        List<Vaccination> vaccinationList = vaccinationManagerRepository.searchAllList(startDate, endDate, '%' + name + '%', status);
+    public Page<Vaccination> searchAllVaccinationManager(String startDate,  String name, String status, int pageable, int type) {
+        List<Vaccination> vaccinationList=new ArrayList<Vaccination>();
+        try{
+          vaccinationList = vaccinationManagerRepository.searchAllList(startDate, '%' + name + '%', status);
+
+        }catch( Exception ex){
+           logger.error("loi search :"+ ex);
+        }
 
         Pageable pageableContent = PageRequest.of(pageable, 5);
         int startPage = (int) pageableContent.getOffset();

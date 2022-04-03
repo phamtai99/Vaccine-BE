@@ -9,7 +9,7 @@ public interface VaccinationManagerService {
     /**
      *  lấy danh sách + phân trang + tìm kiếm
      */
-    Page<Vaccination> searchAllVaccinationManager(String startDate, String endDate, String name, String status, int pageable, int type);
+    Page<Vaccination> searchAllVaccinationManager(String startDate, String name, String status, int pageable, int type);
 
     /**
      *  lấy danh sách + phân trang

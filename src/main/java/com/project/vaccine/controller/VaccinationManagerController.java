@@ -42,7 +42,7 @@ public class VaccinationManagerController {
      */
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity<Page<Vaccination>> listAllVaccination(@PageableDefault(size = 5) Pageable pageable,
+    public ResponseEntity<Page<Vaccination>> listAllVaccination(@PageableDefault(size = 10) Pageable pageable,
                                                                 @RequestParam int type) {
         Page<Vaccination> vaccinations = vaccinationManagerService.findAllVaccination(pageable, type);
         if (vaccinations.isEmpty()) {
@@ -56,12 +56,12 @@ public class VaccinationManagerController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity<Page<Vaccination>> searchAllVaccination(@RequestParam String startDate,
-                                                                  @RequestParam String endDate,
+
                                                                   @RequestParam String name,
                                                                   @RequestParam String status,
                                                                   @RequestParam int pageable,
                                                                   @RequestParam int type) {
-        Page<Vaccination> vaccinations = vaccinationManagerService.searchAllVaccinationManager(startDate, endDate, name, status, pageable, type);
+        Page<Vaccination> vaccinations = vaccinationManagerService.searchAllVaccinationManager(startDate, name, status, pageable, type);
         if (vaccinations.isEmpty()) {
             return new ResponseEntity<Page<Vaccination>>(HttpStatus.NO_CONTENT);
         }

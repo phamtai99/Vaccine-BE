@@ -1,19 +1,25 @@
 package com.project.vaccine.service.impl;
 
+import com.project.vaccine.controller.SecurityController;
 import com.project.vaccine.dto.CreateVaccineDTO;
 import com.project.vaccine.dto.VaccineDTO;
 import com.project.vaccine.entity.Vaccine;
 import com.project.vaccine.repository.VaccineRepository;
 import com.project.vaccine.service.VaccineService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class VaccineServiceImpl implements VaccineService {
+
+    private static Logger logger= LogManager.getLogger(VaccineServiceImpl.class);
 
     @Autowired
     private VaccineRepository vaccineRepository;
@@ -60,7 +66,13 @@ public class VaccineServiceImpl implements VaccineService {
 
     @Override
     public List<VaccineDTO> search(String name, String vaccineType, String origin) {
-        return vaccineRepository.search(name, vaccineType, origin);
+        List<VaccineDTO> listVaccine= new ArrayList<VaccineDTO>();
+        try {
+            listVaccine=vaccineRepository.search(name, vaccineType, origin);
+        }catch (Exception ex){
+            logger.error(" Lỗi query : "+ ex);
+        }
+        return listVaccine;
     }
 
     @Override

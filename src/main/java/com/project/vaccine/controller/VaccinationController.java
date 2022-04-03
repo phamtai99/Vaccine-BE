@@ -64,7 +64,7 @@ public class VaccinationController {
     }
 
     /**
-     *get the list of all vaccination's time
+     * Lấy list thời gian tiêm chủng định kì trung tâm
      */
     @GetMapping("/time-list")
     public ResponseEntity<List<TimeDTO>> findAllVaccinationTime() {

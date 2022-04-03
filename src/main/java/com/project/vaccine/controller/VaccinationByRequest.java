@@ -48,7 +48,8 @@ public class VaccinationByRequest {
 
 
     /**
-     * Tìm kiếm + Phân trang
+     * Lấy ra danh sách vaccine đăng ký tiêm theo yêu cầu
+     * Ngày 2/4/2022
      **/
     @GetMapping(value = "/public/vaccine/list")
     public ResponseEntity<Page<Vaccine>> getListVaccine(@PageableDefault(size = 10) Pageable pageable,
@@ -57,7 +58,6 @@ public class VaccinationByRequest {
                                                         @RequestParam(defaultValue = "") String origin,
                                                         @RequestParam(defaultValue = "") String status) {
         Page<Vaccine> vaccineList;
-
         if (status.equals("false")) {
             vaccineList = vaccineService.findAllByQuantityIsNotExits(name, vaccineTypeName, origin, pageable);
         } else if (status.equals("true")) {
@@ -65,16 +65,12 @@ public class VaccinationByRequest {
         } else {
             vaccineList = vaccineService.findAllByNameContainingAndVaccineType_NameContainingAndOriginContaining(name, vaccineTypeName, origin, pageable);
         }
-
         if (vaccineList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(vaccineList, HttpStatus.OK);
         }
-
-
     }
-
 
     /**
      * Get Vắc-xin theo Id

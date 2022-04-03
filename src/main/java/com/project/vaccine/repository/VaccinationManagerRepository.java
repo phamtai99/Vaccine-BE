@@ -19,7 +19,6 @@ public interface VaccinationManagerRepository extends JpaRepository<Vaccination,
     /**
      * Phân trang có điều kiện về biến delete và vaccinationType và hiển thị danh sách
      */
-
     Page<Vaccination> findAllByDeleteFlagIsFalseAndVaccinationType_VaccinationTypeIdIs(Pageable pageable, int type);
 
     /**
@@ -79,12 +78,11 @@ public interface VaccinationManagerRepository extends JpaRepository<Vaccination,
                     "join vaccine on vaccination.vaccine_id = vaccine.vaccine_id " +
                     "where vaccination.delete_flag = 0 " +
                     "and vaccination.vaccination_type_id = 1 " +
-                    "and vaccination.`date` > ?1 " +
-                    "and vaccination.`date` < ?2 " +
-                    "and vaccine.name like ?3 " +
-                    "and vaccination.status = ?4 " +
+                    "and vaccination.date = ?1 " +
+                    "and vaccine.name like ?2 " +
+                    "and vaccination.status = ?3 " +
                     "order by vaccination.vaccination_id", nativeQuery = true)
-    List<Vaccination> searchAllList(String startDate, String endDate, String name, String status);
+    List<Vaccination> searchAllList(String startDate, String name, String status);
 
 
 }

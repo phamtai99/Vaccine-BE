@@ -60,6 +60,7 @@ public class VaccineController {
                                                    @RequestParam(defaultValue = "") String statusVaccine) {
 
         List<VaccineDTO> vaccines = vaccineService.search(nameVaccine, typeVaccine, originVaccine);
+        logger.info(" ListVaccine : "+ vaccines);
         List<VaccineDTO> vaccineDTOList = new ArrayList<>();
 
         if (statusVaccine.equals("con")) {

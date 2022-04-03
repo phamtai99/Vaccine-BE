@@ -32,6 +32,7 @@ public class PatientServiceImpl implements PatientService {
         if (id.length() > 3) {
             id = id.substring(3);
         }
+        id=id.replace("0", "");
         List<Patient> patientList = patientRepository.search(name, id);
         Pageable pageable1 = PageRequest.of(pageable, 5);
         int start = (int) pageable1.getOffset();
