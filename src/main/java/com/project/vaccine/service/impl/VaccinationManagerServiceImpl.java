@@ -1,6 +1,7 @@
 package com.project.vaccine.service.impl;
 
 import com.project.vaccine.controller.SecurityController;
+import com.project.vaccine.dto.SearchVaccineDTO;
 import com.project.vaccine.dto.VaccinationManagerDto;
 import com.project.vaccine.entity.Vaccination;
 import com.project.vaccine.repository.VaccinationManagerRepository;
@@ -35,22 +36,45 @@ public class VaccinationManagerServiceImpl implements VaccinationManagerService 
     /**
      * tìm kiếm và phân trang
      */
+//    @Override
+//    public Page<SearchVaccineDTO> searchAllVaccinationManager(String Date,  String name, String status, int pageable, int type) {
+//        List<SearchVaccineDTO> vaccinationList=new ArrayList<SearchVaccineDTO>();
+//        try{
+//          vaccinationList = vaccinationManagerRepository.searchAllList('%' +Date+ '%', '%' + name + '%','%' + status+ '%');
+//
+//        }catch( Exception ex){
+//           logger.error("loi search :"+ ex);
+//        }
+//
+//        Pageable pageableContent = PageRequest.of(pageable, 5);
+//        int startPage = (int) pageableContent.getOffset();
+//        int endPage = Math.min((startPage + pageableContent.getPageSize()), vaccinationList.size());
+//        Page<SearchVaccineDTO> vaccinationPage = new PageImpl<SearchVaccineDTO>(vaccinationList.subList(startPage, endPage), pageableContent, vaccinationList.size());
+//        return vaccinationPage;
+//    }
+
     @Override
-    public Page<Vaccination> searchAllVaccinationManager(String startDate,  String name, String status, int pageable, int type) {
-        List<Vaccination> vaccinationList=new ArrayList<Vaccination>();
+    public List<SearchVaccineDTO> searchAllVaccinationManager(String Date,  String name, String status, int pageable, int type) {
+        List<SearchVaccineDTO> vaccinationList=new ArrayList<SearchVaccineDTO>();
         try{
-          vaccinationList = vaccinationManagerRepository.searchAllList(startDate, '%' + name + '%', status);
+            if(status.isEmpty()|| status.equals("")){
+                vaccinationList = vaccinationManagerRepository.searchAllListStatusNull('%' +Date+ '%', '%' + name + '%','%' +status+ '%');
+            }else{
+                vaccinationList = vaccinationManagerRepository.searchAllList('%' +Date+ '%', '%' + name + '%',status);
+
+            }
 
         }catch( Exception ex){
-           logger.error("loi search :"+ ex);
+            logger.error("loi search :"+ ex);
         }
 
-        Pageable pageableContent = PageRequest.of(pageable, 5);
-        int startPage = (int) pageableContent.getOffset();
-        int endPage = Math.min((startPage + pageableContent.getPageSize()), vaccinationList.size());
-        Page<Vaccination> vaccinationPage = new PageImpl<Vaccination>(vaccinationList.subList(startPage, endPage), pageableContent, vaccinationList.size());
-        return vaccinationPage;
+//        Pageable pageableContent = PageRequest.of(pageable, 5);
+//        int startPage = (int) pageableContent.getOffset();
+//        int endPage = Math.min((startPage + pageableContent.getPageSize()), vaccinationList.size());
+//        Page<SearchVaccineDTO> vaccinationPage = new PageImpl<SearchVaccineDTO>(vaccinationList.subList(startPage, endPage), pageableContent, vaccinationList.size());
+        return vaccinationList;
     }
+
 
     /**
      * Lấy vaccination theo ID
@@ -73,7 +97,14 @@ public class VaccinationManagerServiceImpl implements VaccinationManagerService 
      */
     @Override
     public void updateVaccinationManager(VaccinationManagerDto vaccinationManagerDto) {
-        vaccinationManagerRepository.updateVaccinationManager(vaccinationManagerDto.getDate(), vaccinationManagerDto.getDescription(), vaccinationManagerDto.getStartTime(), vaccinationManagerDto.getEndTime(), vaccinationManagerDto.getLocationId(), vaccinationManagerDto.getVaccineId(), vaccinationManagerDto.getVaccinationId());
+        try{
+             vaccinationManagerRepository.updateVaccinationManager(vaccinationManagerDto.getDate(), vaccinationManagerDto.getDescription(),
+                    vaccinationManagerDto.getStartTime(), vaccinationManagerDto.getEndTime(),
+                    vaccinationManagerDto.getVaccineId(), vaccinationManagerDto.getVaccinationId());
+
+        }catch(Exception ex){
+            logger.error("Lỗi cập nhật lịch tiêm chủng định kì : "+ ex);
+        }
     }
 
 

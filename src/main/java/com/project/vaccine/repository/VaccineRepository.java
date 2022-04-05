@@ -42,27 +42,45 @@ public interface VaccineRepository extends JpaRepository<Vaccine, Integer> {
             "group by vaccine.vaccine_id limit ?1,5;", nativeQuery = true)
     List<VaccineDTO> getAllVaccineDTO(int index);
 
-    @Query(value = "SELECT vaccine.vaccine_id as id,vaccine.name as name, vaccine_type.name as vaccineType,invoice.transaction_date as dayReceive, " +
+    @Query(value = "SELECT vaccine.vaccine_id as id,vaccine.name as name, vaccine_type.name as vaccineType,vaccine.times , " +
             "vaccine.license_code as licenseCode, vaccine.origin as origin, vaccine.dosage as dosage," +
             "vaccine.expired as expired, vaccine.maintenance as maintenance, vaccine.age as age, storage.quantity as quantity" +
             " FROM vaccine " +
-            "left join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
-            "left join storage on storage.vaccine_id = vaccine.vaccine_id " +
-            "left join invoice on invoice.vaccine_id = vaccine.vaccine_id " +
+            " join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
+            " join storage on storage.vaccine_id = vaccine.vaccine_id " +
             "WHERE vaccine.delete_flag = 0 " +
             "group by vaccine.vaccine_id", nativeQuery = true)
     List<VaccineDTO> getAllVaccineDTONotPagination();
 
-    @Query(value = "SELECT vaccine.vaccine_id as id,vaccine.name as name, vaccine_type.name as vaccineType,invoice.transaction_date as dayReceive, " +
+//    @Query(value = "SELECT vaccine.vaccine_id as id,vaccine.name as name, vaccine_type.name as vaccineType,invoice.transaction_date as dayReceive, " +
+//            "vaccine.license_code as licenseCode, vaccine.origin as origin, vaccine.dosage as dosage," +
+//            "vaccine.expired as expired, vaccine.maintenance as maintenance, vaccine.age as age, storage.quantity as quantity " +
+//            "FROM vaccine   " +
+//            "left join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
+//            "left join storage on storage.vaccine_id = vaccine.vaccine_id " +
+//            "left join invoice on invoice.vaccine_id = vaccine.vaccine_id " +
+//            "where vaccine.name like ?1 and vaccine_type.name like ?2 and vaccine.origin like ?3 " +
+//            "and vaccine.delete_flag = 0 " +
+//            "group by vaccine.vaccine_id", nativeQuery = true)
+//    List<VaccineDTO> search(String name, String vaccineType, String origin);
+
+
+    @Query(value = "select * from ( " +
+            "SELECT vaccine.vaccine_id as id,vaccine.name as name, vaccine_type.name as vaccineType,vaccine.times , " +
             "vaccine.license_code as licenseCode, vaccine.origin as origin, vaccine.dosage as dosage," +
-            "vaccine.expired as expired, vaccine.maintenance as maintenance, vaccine.age as age, storage.quantity as quantity " +
-            "FROM vaccine left join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
-            "left join storage on storage.vaccine_id = vaccine.vaccine_id " +
-            "left join invoice on invoice.vaccine_id = vaccine.vaccine_id " +
-            "where vaccine.name like %?1% and vaccine_type.name like %?2% and vaccine.origin like %?3% " +
-            "and vaccine.delete_flag = 0 " +
-            "group by vaccine.vaccine_id", nativeQuery = true)
+            "vaccine.expired as expired, vaccine.maintenance as maintenance, vaccine.age as age, storage.quantity as quantity" +
+            " FROM vaccine " +
+            " join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
+            " join storage on storage.vaccine_id = vaccine.vaccine_id " +
+            "WHERE vaccine.delete_flag = 0 " +
+            "group by vaccine.vaccine_id) as vc "+
+            "where vc.name like ?1  " +
+            "and vc.vaccineType like ?2 " +
+            " and vc.origin like ?3  ; ", nativeQuery = true)
     List<VaccineDTO> search(String name, String vaccineType, String origin);
+
+
+
 
     @Modifying
     @Query(value = "insert into vaccine(vaccine.name, vaccine.dosage, vaccine.license_code , vaccine.maintenance, " +

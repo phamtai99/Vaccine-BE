@@ -68,7 +68,7 @@ public class VaccineServiceImpl implements VaccineService {
     public List<VaccineDTO> search(String name, String vaccineType, String origin) {
         List<VaccineDTO> listVaccine= new ArrayList<VaccineDTO>();
         try {
-            listVaccine=vaccineRepository.search(name, vaccineType, origin);
+            listVaccine=vaccineRepository.search('%' +name  +'%','%'+ vaccineType +'%','%' + origin +'%');
         }catch (Exception ex){
             logger.error(" Lỗi query : "+ ex);
         }

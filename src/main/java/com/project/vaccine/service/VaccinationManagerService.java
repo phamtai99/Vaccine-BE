@@ -1,15 +1,20 @@
 package com.project.vaccine.service;
 
+import com.project.vaccine.dto.SearchVaccineDTO;
 import com.project.vaccine.dto.VaccinationManagerDto;
 import com.project.vaccine.entity.Vaccination;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface VaccinationManagerService {
     /**
      *  lấy danh sách + phân trang + tìm kiếm
      */
-    Page<Vaccination> searchAllVaccinationManager(String startDate, String name, String status, int pageable, int type);
+//    Page<SearchVaccineDTO> searchAllVaccinationManager(String startDate, String name, String status, int pageable, int type);
+
+    List<SearchVaccineDTO> searchAllVaccinationManager(String startDate, String name, String status, int pageable, int type);
 
     /**
      *  lấy danh sách + phân trang

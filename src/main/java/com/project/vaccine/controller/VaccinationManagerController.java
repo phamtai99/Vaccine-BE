@@ -1,5 +1,6 @@
 package com.project.vaccine.controller;
 
+import com.project.vaccine.dto.SearchVaccineDTO;
 import com.project.vaccine.dto.VaccinationManagerDto;
 import com.project.vaccine.entity.Location;
 import com.project.vaccine.entity.Vaccination;
@@ -55,17 +56,16 @@ public class VaccinationManagerController {
      *  Dùng để lấy danh sách phân trang và tìm kiếm sự kiện tiêm chủng định kỳ
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<Page<Vaccination>> searchAllVaccination(@RequestParam String startDate,
-
+    public ResponseEntity<List<SearchVaccineDTO>> searchAllVaccination(@RequestParam String startDate,
                                                                   @RequestParam String name,
                                                                   @RequestParam String status,
                                                                   @RequestParam int pageable,
                                                                   @RequestParam int type) {
-        Page<Vaccination> vaccinations = vaccinationManagerService.searchAllVaccinationManager(startDate, name, status, pageable, type);
+        List<SearchVaccineDTO> vaccinations = vaccinationManagerService.searchAllVaccinationManager(startDate, name, status, pageable, type);
         if (vaccinations.isEmpty()) {
-            return new ResponseEntity<Page<Vaccination>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<SearchVaccineDTO>>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<Page<Vaccination>>(vaccinations, HttpStatus.OK);
+        return new ResponseEntity<List<SearchVaccineDTO>>(vaccinations, HttpStatus.OK);
     }
 
     /**

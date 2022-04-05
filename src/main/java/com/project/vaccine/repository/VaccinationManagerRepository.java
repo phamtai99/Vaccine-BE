@@ -1,5 +1,6 @@
 package com.project.vaccine.repository;
 
+import com.project.vaccine.dto.SearchVaccineDTO;
 import com.project.vaccine.entity.Vaccination;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,10 +50,10 @@ public interface VaccinationManagerRepository extends JpaRepository<Vaccination,
     @Query(
             value = "update vaccination set " +
                     "`date` = ?1, description = ?2, start_time = ?3, end_time = ?4," +
-                    "location_id = ?5, vaccine_id = ?6 " +
-                    "where vaccination_id = ?7",
+                    " vaccine_id = ?5 " +
+                    "where vaccination_id = ?6",
             nativeQuery = true)
-    void updateVaccinationManager(String date, String description, String startTime, String endTime, int location, int vaccine, int vaccinationId);
+    void updateVaccinationManager(String date, String description, String startTime, String endTime, int vaccine, int vaccinationId);
 
     /**
      *  Query xóa tạm thời thông tin một sự kiện tiêm chủng dự phòng
@@ -73,16 +74,45 @@ public interface VaccinationManagerRepository extends JpaRepository<Vaccination,
     /**
      *  Tìm kiếm cùng với phân trang ;
      */
+//    @Query(
+//            value = "select vc.* from vaccine_management.vaccination as vc " +
+//                    "join vaccine on vc.vaccine_id = vaccine.vaccine_id " +
+//                    "where vc.delete_flag = 0 " +
+//                    "and vc.vaccination_type_id = 1 " +
+//                    "and vc.date like ?1 " +
+//                    "and vaccine.name like ?2 " +
+//                    "and vc.status like ?3 " +
+//                    "order by vc.vaccination_id", nativeQuery = true)
+//    List<SearchVaccineDTO> searchAllList(String startDate, String name, String status);
     @Query(
-            value = "select * from vaccine_management.vaccination " +
-                    "join vaccine on vaccination.vaccine_id = vaccine.vaccine_id " +
-                    "where vaccination.delete_flag = 0 " +
-                    "and vaccination.vaccination_type_id = 1 " +
-                    "and vaccination.date = ?1 " +
-                    "and vaccine.name like ?2 " +
-                    "and vaccination.status = ?3 " +
-                    "order by vaccination.vaccination_id", nativeQuery = true)
-    List<Vaccination> searchAllList(String startDate, String name, String status);
+            value = "SELECT vc.vaccination_id as vaccinationId, vc.start_time as startTime,vc.status, vc.date, vc.end_time as endTime,vc.description,  " +
+                    "location.name as location, vaccine.name ,vaccine.times, vaccine.age  , vaccine_type.name as type " +
+                    "FROM new_vaccine_maneger.vaccination as vc  " +
+                    " join vaccine on vc.vaccine_id = vaccine.vaccine_id  " +
+                    " join location on vc.location_id= location.location_id  "+
+                    " join vaccine_type on vaccine.vaccine_type_id=vaccine_type.vaccine_type_id   "+
+                    "where vc.delete_flag = 0   " +
+                    "and vc.vaccination_type_id = 1  "+
+                    "and vc.date like ?1   " +
+                    "and vaccine.name like ?2 "  +
+                    "and vc.status = ?3   " +
+                    "order by vc.vaccination_id  ", nativeQuery = true)
+    List<SearchVaccineDTO> searchAllList(String startDate, String name, String status);
+
+    @Query(
+            value = "SELECT vc.vaccination_id as vaccinationId, vc.start_time as startTime,vc.status, vc.date, vc.end_time as endTime,vc.description,  " +
+                    "location.name as location, vaccine.name ,vaccine.times, vaccine.age  , vaccine_type.name as type " +
+                    "FROM new_vaccine_maneger.vaccination as vc  " +
+                    " join vaccine on vc.vaccine_id = vaccine.vaccine_id  " +
+                    " join location on vc.location_id= location.location_id  "+
+                    " join vaccine_type on vaccine.vaccine_type_id=vaccine_type.vaccine_type_id   "+
+                    "where vc.delete_flag = 0   " +
+                    "and vc.vaccination_type_id = 1  "+
+                    "and vc.date like ?1   " +
+                    "and vaccine.name like ?2 "  +
+                    "and vc.status like ?3   " +
+                    "order by vc.vaccination_id  ", nativeQuery = true)
+    List<SearchVaccineDTO> searchAllListStatusNull(String startDate, String name, String status);
 
 
 }

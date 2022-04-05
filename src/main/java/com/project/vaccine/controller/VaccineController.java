@@ -69,11 +69,16 @@ public class VaccineController {
                     vaccineDTOList.add(vaccineDTO);
                 }
             }
-        } else {
+        } else if(statusVaccine.equals("het")){
             for (VaccineDTO vaccineDTO : vaccines) {
                 if (vaccineDTO.getQuantity() == 0) {
                     vaccineDTOList.add(vaccineDTO);
                 }
+            }
+        }
+        else {
+            for (VaccineDTO vaccineDTO : vaccines) {
+                    vaccineDTOList.add(vaccineDTO);
             }
         }
         if (vaccines.isEmpty()) {
