@@ -25,6 +25,6 @@ public interface ProviderRepository extends JpaRepository<Provider,Integer> {
      * find by name Provider
      * @return
      */
-    @Query(value = "select * from provider where provider.name = ?",nativeQuery = true)
+    @Query(value = "select * from provider where provider.name = ?1",nativeQuery = true)
     Provider searchNameProvider(String name);
 }

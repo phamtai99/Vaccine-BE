@@ -3,6 +3,7 @@ package com.project.vaccine.service.impl;
 import com.project.vaccine.controller.SecurityController;
 import com.project.vaccine.dto.SearchVaccineDTO;
 import com.project.vaccine.dto.VaccinationManagerDto;
+import com.project.vaccine.dto.VaccinationUpdateDTO;
 import com.project.vaccine.entity.Vaccination;
 import com.project.vaccine.repository.VaccinationManagerRepository;
 import com.project.vaccine.service.VaccinationManagerService;
@@ -84,23 +85,34 @@ public class VaccinationManagerServiceImpl implements VaccinationManagerService 
         return vaccinationManagerRepository.findByIdVaccination(id, 0, 1);
     }
 
+    @Override
+    public SearchVaccineDTO findByIdVaccinationManagerEdit(Integer id) {
+        SearchVaccineDTO vaccineDTO=null;
+        try{
+             vaccineDTO=  vaccinationManagerRepository.findByIdVaccination(id);
+        }catch (Exception ex){
+            logger.error(" Lỗi tìm kiếm theo lịch tiêm chủng theo mã tiêm chủng : "+ex);
+        }
+        return vaccineDTO;
+    }
+
     /**
      * Thêm mới vaccination
      */
     @Override
     public void saveVaccinationManager(VaccinationManagerDto vaccinationManagerDto) {
-        vaccinationManagerRepository.saveVaccinationManager(vaccinationManagerDto.getDate(), false, vaccinationManagerDto.getDescription(), vaccinationManagerDto.getStartTime(), vaccinationManagerDto.getEndTime(), false, 1, 1, vaccinationManagerDto.getVaccineId());
+        vaccinationManagerRepository.saveVaccinationManager(vaccinationManagerDto.getDate(), false, vaccinationManagerDto.getDescription(), vaccinationManagerDto.getStartTime(), vaccinationManagerDto.getEndTime(), false, vaccinationManagerDto.getLocationId(), 1, vaccinationManagerDto.getVaccineId());
     }
 
     /**
      * cập nhật vaccination
      */
     @Override
-    public void updateVaccinationManager(VaccinationManagerDto vaccinationManagerDto) {
+    public void updateVaccinationManager(VaccinationUpdateDTO vaccinationManagerDto) {
         try{
              vaccinationManagerRepository.updateVaccinationManager(vaccinationManagerDto.getDate(), vaccinationManagerDto.getDescription(),
                     vaccinationManagerDto.getStartTime(), vaccinationManagerDto.getEndTime(),
-                    vaccinationManagerDto.getVaccineId(), vaccinationManagerDto.getVaccinationId());
+                    vaccinationManagerDto.getLocationId(), vaccinationManagerDto.getVaccinationId());
 
         }catch(Exception ex){
             logger.error("Lỗi cập nhật lịch tiêm chủng định kì : "+ ex);

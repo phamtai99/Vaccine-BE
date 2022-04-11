@@ -74,7 +74,7 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
     int findTotalPage(String age, String startTime, String endTime, String vaccineName, String description);
 
     /**
-     *get the list for search data with date
+     *
      */
     @Query(value = "select vaccination.vaccination_id as vaccinationId, vaccination.date, vaccination.start_time as startTime, vaccination.end_time as endTime, vaccine.name as vaccineName, " +
             "vaccine_type.name as vaccineTypeName, vaccine.age as age, vaccination.description, location.name as location, vaccine.origin as country, vaccine.image as image, " +
@@ -89,11 +89,12 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
             "and vaccination.end_time like ?4  " +
             "and vaccine.name like ?5  " +
             "and vaccination.description like ?6 " +
+            "and vaccination.vaccination_type_id = 1"+
             "and vaccination.delete_flag = 0 ", nativeQuery = true)
     List<RegistrablePeriodicalVaccinationDTO> findCustomListWithPageWithDate(String age, String date, String startTime, String endTime, String vaccineName, String description);
 
     /**
-     *get the list for search data without date
+     *
      */
     @Query(value = "select vaccination.vaccination_id as vaccinationId, vaccination.date, vaccination.start_time as startTime, vaccination.end_time as endTime, vaccine.name as vaccineName, " +
             "vaccine_type.name as vaccineTypeName, vaccine.age as age, vaccination.description, location.name as location, vaccine.origin as country, vaccine.image as image, " +
@@ -108,7 +109,9 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
             "and vaccination.end_time like ?3  " +
             "and vaccine.name like ?4  " +
             "and vaccination.description like ?5 " +
-            "and vaccination.delete_flag = 0 ", nativeQuery = true)
+            "and vaccination.delete_flag = 0 "+
+            " and vaccination.vaccination_type_id = 1"
+            , nativeQuery = true)
     List<RegistrablePeriodicalVaccinationDTO> findCustomListWithPageWithoutDate(String age, String startTime, String endTime, String vaccineName, String description);
 
 }

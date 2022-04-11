@@ -2,6 +2,7 @@ package com.project.vaccine.controller;
 
 import com.project.vaccine.dto.SearchVaccineDTO;
 import com.project.vaccine.dto.VaccinationManagerDto;
+import com.project.vaccine.dto.VaccinationUpdateDTO;
 import com.project.vaccine.entity.Location;
 import com.project.vaccine.entity.Vaccination;
 import com.project.vaccine.entity.Vaccine;
@@ -72,13 +73,17 @@ public class VaccinationManagerController {
      * Dùng để lấy sự kiện tiêm chủng định kỳ ở id=?
      */
     @RequestMapping(value = "/findById/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Vaccination> findVaccinationById(@PathVariable("id") Integer id) {
-        Vaccination vaccination = vaccinationManagerService.findByIdVaccinationManager(id);
+    public ResponseEntity<SearchVaccineDTO> findVaccinationById(@PathVariable("id") Integer id) {
+        SearchVaccineDTO vaccination = vaccinationManagerService.findByIdVaccinationManagerEdit(id);
         if (vaccination == null) {
-            return new ResponseEntity<Vaccination>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<SearchVaccineDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Vaccination>(vaccination, HttpStatus.OK);
+        return new ResponseEntity<SearchVaccineDTO>(vaccination, HttpStatus.OK);
     }
+
+
+
+
 
     /**
      * Dùng để tạo mới sự kiện tiêm chủng định kỳ
@@ -99,7 +104,7 @@ public class VaccinationManagerController {
      * T Dùng để cập nhập thông tin sự kiện tiêm chủng định kỳ
      */
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Vaccination> updateVaccination(@PathVariable("id") Integer id, @RequestBody VaccinationManagerDto vaccinationManagerDto) {
+    public ResponseEntity<Vaccination> updateVaccination(@PathVariable("id") Integer id, @RequestBody VaccinationUpdateDTO vaccinationManagerDto) {
         Vaccination currentVaccination = vaccinationManagerService.findByIdVaccinationManager(id);
         if (currentVaccination == null) {
             return new ResponseEntity<Vaccination>(HttpStatus.NOT_FOUND);

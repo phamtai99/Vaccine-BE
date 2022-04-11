@@ -50,10 +50,10 @@ public interface VaccinationManagerRepository extends JpaRepository<Vaccination,
     @Query(
             value = "update vaccination set " +
                     "`date` = ?1, description = ?2, start_time = ?3, end_time = ?4," +
-                    " vaccine_id = ?5 " +
+                    " location_id = ?5 " +
                     "where vaccination_id = ?6",
             nativeQuery = true)
-    void updateVaccinationManager(String date, String description, String startTime, String endTime, int vaccine, int vaccinationId);
+    void updateVaccinationManager(String date, String description, String startTime, String endTime, String locationId, int vaccinationId);
 
     /**
      *  Query xóa tạm thời thông tin một sự kiện tiêm chủng dự phòng
@@ -86,7 +86,7 @@ public interface VaccinationManagerRepository extends JpaRepository<Vaccination,
 //    List<SearchVaccineDTO> searchAllList(String startDate, String name, String status);
     @Query(
             value = "SELECT vc.vaccination_id as vaccinationId, vc.start_time as startTime,vc.status, vc.date, vc.end_time as endTime,vc.description,  " +
-                    "location.name as location, vaccine.name ,vaccine.times, vaccine.age  , vaccine_type.name as type " +
+                    "location.name as location, vaccine.name ,vaccine.times, vaccine.age  , vaccine_type.name as type, vc.location_id as locationId  " +
                     "FROM new_vaccine_maneger.vaccination as vc  " +
                     " join vaccine on vc.vaccine_id = vaccine.vaccine_id  " +
                     " join location on vc.location_id= location.location_id  "+
@@ -99,9 +99,26 @@ public interface VaccinationManagerRepository extends JpaRepository<Vaccination,
                     "order by vc.vaccination_id  ", nativeQuery = true)
     List<SearchVaccineDTO> searchAllList(String startDate, String name, String status);
 
+
     @Query(
             value = "SELECT vc.vaccination_id as vaccinationId, vc.start_time as startTime,vc.status, vc.date, vc.end_time as endTime,vc.description,  " +
-                    "location.name as location, vaccine.name ,vaccine.times, vaccine.age  , vaccine_type.name as type " +
+                    "location.name as location, vaccine.name ,vaccine.times, vaccine.age  , vaccine_type.name as type,  vc.location_id as locationId   " +
+                    "FROM new_vaccine_maneger.vaccination as vc  " +
+                    " join vaccine on vc.vaccine_id = vaccine.vaccine_id  " +
+                    " join location on vc.location_id= location.location_id  "+
+                    " join vaccine_type on vaccine.vaccine_type_id=vaccine_type.vaccine_type_id   "+
+                    "where vc.delete_flag = 0   " +
+                    "and vc.vaccination_type_id = 1  "+
+                    "and vc.vaccination_id = ?1   ", nativeQuery = true)
+    SearchVaccineDTO findByIdVaccination(Integer id);
+
+
+
+
+
+    @Query(
+            value = "SELECT vc.vaccination_id as vaccinationId, vc.start_time as startTime,vc.status, vc.date, vc.end_time as endTime,vc.description,  " +
+                    "location.name as location, vaccine.name ,vaccine.times, vaccine.age  , vaccine_type.name as type,  vc.location_id as locationId  " +
                     "FROM new_vaccine_maneger.vaccination as vc  " +
                     " join vaccine on vc.vaccine_id = vaccine.vaccine_id  " +
                     " join location on vc.location_id= location.location_id  "+

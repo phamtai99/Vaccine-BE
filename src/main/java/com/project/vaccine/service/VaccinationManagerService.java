@@ -2,6 +2,7 @@ package com.project.vaccine.service;
 
 import com.project.vaccine.dto.SearchVaccineDTO;
 import com.project.vaccine.dto.VaccinationManagerDto;
+import com.project.vaccine.dto.VaccinationUpdateDTO;
 import com.project.vaccine.entity.Vaccination;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,9 @@ public interface VaccinationManagerService {
      */
     Vaccination findByIdVaccinationManager(Integer id);
 
+
+
+    SearchVaccineDTO findByIdVaccinationManagerEdit(Integer id);
     /**
      *  thêm mới
      */
@@ -34,7 +38,7 @@ public interface VaccinationManagerService {
     /**
      *  Cập nhật lịch tiêm chủng định kỳ
      */
-    void updateVaccinationManager(VaccinationManagerDto vaccinationManagerDto);
+    void updateVaccinationManager(VaccinationUpdateDTO vaccinationManagerDto);
 
     /**
      *  Cập nhật trạng thái đã tiêm hay chưa
