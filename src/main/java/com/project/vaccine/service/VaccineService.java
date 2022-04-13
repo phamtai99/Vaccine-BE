@@ -36,5 +36,5 @@ public interface VaccineService {
 
     Vaccine getVaccineByIdNameQuery(Integer id);
 
-    Page<Vaccine> getAllVaccineByDuration(Pageable pageable);
+    List<Vaccine> getAllVaccineByDuration(String name );
 }

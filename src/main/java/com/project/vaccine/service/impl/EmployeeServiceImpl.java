@@ -69,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         accountService.addNew(account.getUserName(), account.getEncryptPw());
         int id = accountService.findIdUserByUserName(account.getUserName());
         roleService.setDefaultRole(id, employeeDto.getAccount());
-        employeeRepository.createNewEmployee(employeeDto.getName(), employeeDto.getDateOfBirth(),
+        employeeRepository.createNewEmployee(employeeDto.getName(),employeeDto.getEmail(), employeeDto.getDateOfBirth(),
                 employeeDto.getIdCard(), employeeDto.getAddress(), employeeDto.getPhone(),
                 employeeDto.getPosition(), id, false);
     }

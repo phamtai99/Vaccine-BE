@@ -102,7 +102,7 @@ public class VaccineServiceImpl implements VaccineService {
     }
 
     @Override
-    public Page<Vaccine> getAllVaccineByDuration(Pageable pageable) {
-        return vaccineRepository.findAllByDurationIsNotNull(pageable);
+    public List<Vaccine> getAllVaccineByDuration(String name) {
+        return vaccineRepository.getAllVaccineBySuggesssion('%' +name+ '%');
     }
 }

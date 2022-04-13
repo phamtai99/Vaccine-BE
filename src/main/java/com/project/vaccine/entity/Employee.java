@@ -21,6 +21,7 @@ public class Employee {
     @Pattern(regexp = "\\d{9}")
     private String idCard;
     private String address;
+    private String email;
     private String phone;
     private Boolean deleteFlag;
     @ManyToOne

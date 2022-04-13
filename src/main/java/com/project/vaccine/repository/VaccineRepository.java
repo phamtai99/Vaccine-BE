@@ -98,5 +98,12 @@ public interface VaccineRepository extends JpaRepository<Vaccine, Integer> {
     List<Vaccine> getAllVaccine();
 
     Page<Vaccine> findAllByDurationIsNotNull(Pageable pageable);
+
+    @Query(value = "select * from vaccine  "+
+            "join storage on vaccine.vaccine_id=storage.vaccine_id  "+
+            "where storage.quantity >=1 "+
+            "and vaccine.delete_flag = 0 and vaccine.expired > now() and vaccine.name like ?1  " +
+            "LIMIT 12  ", nativeQuery = true)
+    List<Vaccine> getAllVaccineBySuggesssion(String name);
 }
 

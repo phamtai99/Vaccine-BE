@@ -256,8 +256,8 @@ public class VaccinationByRequest {
 
 
     @GetMapping(value = "/public/get-list-vaccine")
-    public ResponseEntity<?> getListVaccine(@PageableDefault Pageable pageable) {
-        Page<Vaccine> vaccineList = vaccineService.getAllVaccineByDuration(pageable);
+    public ResponseEntity<?> getListVaccine(@RequestParam String name ) {
+        List<Vaccine> vaccineList = vaccineService.getAllVaccineByDuration(name);
 
         if (vaccineList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -16,4 +16,6 @@ public class EmployeeDto {
     String phone;
     Integer position;
     Integer account;
+
+    String email;
 }

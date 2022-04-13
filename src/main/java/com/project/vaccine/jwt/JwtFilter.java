@@ -41,11 +41,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+            filterChain.doFilter(request, response);
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
         }
 
-        filterChain.doFilter(request, response);
+
     }
 
     private String parseJwt(HttpServletRequest request) {
