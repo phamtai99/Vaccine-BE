@@ -29,8 +29,8 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
     Page<VaccinationHistory> findAllByVaccination_Vaccine_NameContainingAndVaccination_DateContainingAndPatient_PatientId(String vaccination_vaccine_name, String vaccination_date, int patient_id, Pageable pageable);
 
     @Query(value = "select patient.patient_id as patientId, patient.name as patientName, \n" +
-            "patient.gender as patientGender, patient.date_of_birth as patientAge, \n" +
-            "patient.guardian as patientGuardian, patient.address as patientAddress, \n" +
+            "patient.gender as patientGender, patient.date_of_birth as patientAge, location.name as location, \n" +
+            "patient.guardian as patientGuardian, patient.address as patientAddress,   vaccination.start_time as startTime, vaccination.end_time as endTime, \n" +
             "patient.phone as patientPhone,vaccine.expired as expired,vaccine.name as name,vaccine_type.name as vaccineTypeName,\n" +
             "vaccination.date as vaccinationDate, vaccination_history.after_status as vaccineHistoryAfterStatus\n" +
             "from vaccination_history\n" +
@@ -38,6 +38,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "inner join vaccination on vaccination_history.vaccination_id = vaccination.vaccination_id\n" +
             "inner join vaccine on vaccination.vaccine_id = vaccine.vaccine_id\n" +
             "inner join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id\n" +
+            "inner join location on vaccination.location_id = location.location_id \n"+
             "where vaccination_history.vaccination_history_id = ?1 ", nativeQuery = true)
     VaccinationHistoryFeedbackDTO findByIdVaccinationHistory(Integer vaccinationHistoryId);
 
@@ -69,7 +70,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
     Page<VaccinationHistory> findAllByPatient_NameContainingAndVaccination_VaccinationType_VaccinationTypeIdAndStatusIs(String name, Integer id, Boolean status, Pageable pageable);
 
     @Query(value = "select patient.patient_id as patientId, patient.name as patientName, patient.date_of_birth as patientDob, patient.gender as patientGender, \n" +
-            " patient.guardian as patientGuardian, patient.phone as patientPhone, patient.address as patientAddress, \n" +
+            " patient.guardian as patientGuardian, patient.phone as patientPhone, patient.address as patientAddress, vaccination.start_time as startTime, \n" +
             " vaccine.name as vaccineName, vaccine_type.name as vaccineTypeName, vaccination.end_time as endTime, vaccination_history.status as vaccinationHistoryStatus, vaccination_history.vaccination_times as vaccinationTimes, \n" +
             " vaccine.dosage as dosage,vaccine.expired as expired, vaccination_history.pre_status as preStatus, vaccination_history.after_status as afterStatus, vaccination_history.vaccination_history_id as vaccinationHistoryId \n" +
             " from vaccination_history \n" +

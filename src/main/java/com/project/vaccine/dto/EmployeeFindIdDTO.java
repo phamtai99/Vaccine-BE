@@ -10,4 +10,5 @@ public interface EmployeeFindIdDTO {
     Integer getPosition();
     Integer getAccount();
     Integer getRole();
+    String getEmail();
 }

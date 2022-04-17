@@ -2,6 +2,7 @@ package com.project.vaccine.service.impl;
 
 import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.Vaccination;
+import com.project.vaccine.entity.VaccinationHistory;
 import com.project.vaccine.repository.*;
 import com.project.vaccine.service.VaccinationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,19 +96,25 @@ public class VaccinationServiceImpl implements VaccinationService {
                     '%'+searchData.getVaccineName()+'%','%'+ searchData.getDescription()+ '%');
         }
     }
+
     /**
      *check available time frame and quantity for a periodical vaccination register
      */
     @Override
     public PeriodicalVaccinationTempRegisterDTO checkRegister(PeriodicalVaccinationTempRegisterDTO register) {
         Integer vaccineId = this.vaccinationRepository.getOne(register.getVaccinationId()).getVaccine().getVaccineId();
-        Integer registerQuantity = this.vaccinationHistoryRepository.findAllByVaccination_VaccinationIdIs(register.getVaccinationId()).size();
+
+        List<VaccinationHistory> listRegisterQuantity=this.vaccinationHistoryRepository.findAllByVaccination_VaccinationIdIs(register.getVaccinationId());
+        Integer registerQuantity = listRegisterQuantity.size();
         Long maximumRegister = this.storageRepository.findAllByVaccine_VaccineIdIs(vaccineId).getQuantity();
         System.out.println("maximum register : " + maximumRegister);
         register.setQuantityIsValid(registerQuantity+1 <= maximumRegister);
-        register.setTimeIsValid(this.vaccinationHistoryRepository.findAllByVaccination_VaccinationIdIsAndStartTimeContainsAndEndTimeContains(register.getVaccinationId(), register.getStartTime(), register.getEndTime()).size()+1 < 3);
+        List<VaccinationHistory> listTime=this.vaccinationHistoryRepository.findAllByVaccination_VaccinationIdIsAndStartTimeContainsAndEndTimeContains(register.getVaccinationId(), register.getStartTime(), register.getEndTime());
+        register.setTimeIsValid(listTime.size()+1 < 3);
         String vaccineName = this.vaccineRepository.getOne(vaccineId).getName();
-        register.setAlreadyRegister(this.vaccinationHistoryRepository.findAllByPatient_PatientIdAndVaccination_Vaccine_NameIsAndDeleteFlagIs(register.getPatientId(), vaccineName, false).size() > 0);
+
+        List<VaccinationHistory> list=this.vaccinationHistoryRepository.findAllByPatient_PatientIdAndVaccination_Vaccine_NameIsAndDeleteFlagIs(register.getPatientId(), vaccineName, false);
+        register.setAlreadyRegister(list.size() > 0);
         return register;
     }
 }

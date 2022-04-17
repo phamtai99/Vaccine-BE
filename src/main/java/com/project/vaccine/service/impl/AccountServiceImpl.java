@@ -82,12 +82,12 @@ public class AccountServiceImpl implements AccountService {
     public Boolean findAccountByVerificationCode(String code) {
         Account account = accountRepository.findAccountByVerificationCode(code);
         if (account == null || account.getEnabled()) {
-            return false;
-        } else {
-            account.setEnabled(true);
-            account.setVerificationCode(null);
-            accountRepository.save(account);
             return true;
+        } else {
+//            account.setEnabled(true);
+//            account.setVerificationCode(null);
+//            accountRepository.save(account);
+            return false;
         }
     }
 

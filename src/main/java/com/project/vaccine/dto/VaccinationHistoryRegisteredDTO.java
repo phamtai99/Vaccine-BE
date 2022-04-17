@@ -14,6 +14,7 @@ public interface VaccinationHistoryRegisteredDTO {
     String getVaccineTypeName();
     Boolean getVaccinationHistoryStatus();
     String getEndTime();
+    String getStartTime();
     String getDosage();
     String getExpired();
     String getPreStatus();

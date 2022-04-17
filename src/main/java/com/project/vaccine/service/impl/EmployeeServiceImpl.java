@@ -42,7 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void editEmployee(EmployeeEditDTO employeeEditDTO, int roleId, int accountId) {
         employeeRepository.editAccountRole(roleId, accountId);
-        employeeRepository.editEmployee(employeeEditDTO.getName(), employeeEditDTO.getDateOfBirth(), employeeEditDTO.getIdCard(), employeeEditDTO.getAddress(),
+        employeeRepository.editEmployee(employeeEditDTO.getName(),employeeEditDTO.getEmail(), employeeEditDTO.getDateOfBirth(), employeeEditDTO.getIdCard(), employeeEditDTO.getAddress(),
                 employeeEditDTO.getPhone(), Integer.parseInt(employeeEditDTO.getPosition()), Integer.parseInt(employeeEditDTO.getAccount()), employeeEditDTO.getEmployeeId());
     }
 

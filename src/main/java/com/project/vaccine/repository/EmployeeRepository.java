@@ -41,7 +41,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     /*
      * tim kiem id nhan vien theo id
      */
-    @Query(value = "select employee.employee_id as employeeId, employee.name, employee.date_of_birth as dateOfBirth, \n" +
+    @Query(value = "select employee.employee_id as employeeId, employee.name, employee.date_of_birth as dateOfBirth,employee.email, \n" +
             "employee.id_card as idCard, employee.address, employee.phone, position.position_id as position, account.account_id as account, role.role_id as role from employee \n" +
             "join position on position.position_id = employee.position_id \n" +
             "join account on account.account_id = employee.account_id \n" +
@@ -53,9 +53,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
      */
     @Transactional
     @Modifying
-    @Query(value = "update employee as e set e.name = ?1, e.date_of_birth = ?2, e.id_card = ?3, e.address = ?4, " +
-            "e.phone = ?5, e.position_id = ?6, e.account_id = ?7 where e.employee_id = ?8", nativeQuery = true)
-    void editEmployee(String name, String dateOfBirth, String idCard, String address, String phone, Integer positionId, Integer accountId, Integer id);
+    @Query(value = "update employee as e set e.name = ?1,e.email=?2, e.date_of_birth = ?3, e.id_card = ?4, e.address = ?5, " +
+            "e.phone = ?6, e.position_id = ?7, e.account_id = ?8 where e.employee_id = ?9", nativeQuery = true)
+    void editEmployee(String name,String email, String dateOfBirth, String idCard, String address, String phone, Integer positionId, Integer accountId, Integer id);
     /*
      * chinh sua id_role voi id account = ? va truyen vao ham eidtEmployee
      */

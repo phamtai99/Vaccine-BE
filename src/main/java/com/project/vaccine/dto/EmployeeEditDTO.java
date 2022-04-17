@@ -11,6 +11,16 @@ public class EmployeeEditDTO {
     String account;
     String role;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    String email;
+
     public String getRole() {
         return role;
     }

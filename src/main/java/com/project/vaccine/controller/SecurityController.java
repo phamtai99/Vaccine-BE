@@ -118,8 +118,9 @@ public class SecurityController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> VerifyEmail(@RequestBody VerifyRequest code) {
-        Boolean isVerified = accountService.findAccountByVerificationCode(code.getCode());
+    public ResponseEntity<?> VerifyEmail(@RequestBody VerifyRequest verifyRequest) {
+        String getDeptCode=verifyRequest.getCode();
+        Boolean isVerified = accountService.findAccountByVerificationCode(getDeptCode);
         if (isVerified) {
             return ResponseEntity.ok(new MessageResponse("activated"));
         } else {
