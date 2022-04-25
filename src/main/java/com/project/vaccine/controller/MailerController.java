@@ -24,7 +24,7 @@ public class MailerController {
     @Autowired
     private VaccinationHistoryService vaccinationHistoryService;
 
-    @Scheduled(cron = "0 45 9 * * ?")
+    @Scheduled(cron = "0 0 8 * * ?")
     public void sendEmail() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         LocalDate dayPlusAWeek = LocalDate.now().plusDays(1);
@@ -34,19 +34,20 @@ public class MailerController {
         List<String> listEmailOneMoreTime = vaccinationHistoryService.getEmailToSendOfVaccinationMore();
         Set<String> listEmail = new HashSet<>();
         listEmail.addAll(listEmailOneTime);
-        listEmail.addAll(listEmailOneMoreTime);
+        listEmail.addAll(listEmailOneMoreTime
+);
 
         if (!(listEmail.size() == 0)) {
             String[] array = listEmail.toArray(new String[0]);
             // Create a Simple MailMessage.
             SimpleMailMessage message = new SimpleMailMessage();
-
             message.setTo(array);
             message.setSubject("Nhắc nhở lịch tiêm chủng ");
             message.setText("Chào bạn \n"
-                    + "TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI xin thông báo, vào ngày " + day + " trung tâm tổ chức tiêm chủng mở rộng "
-                    + "\ntại TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI, địa chỉ: 70 Nguyễn Chí Thanh, Láng Thượng, Ba Đình, Hà Nội, Việt Nam" +
-                    "\n Giờ mở cửa:  Sáng: 07:30–11:00, Chiều: 13:30–16:30");
+                    + "TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI xin thông báo, vào ngày " + day + "  trung tâm tổ chức tiêm chủng mở rộng "
+                    + "\ntại TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI. \n " +
+                    "  Địa chỉ: 70 Nguyễn Chí Thanh, Láng Thượng, Ba Đình, Hà Nội, Việt Nam. \n" +
+                    "  Giờ mở cửa:  Sáng: 07:30–11:00, Chiều: 13:30–16:30.");
 
             // Send Message!
             this.emailSender.send(message);

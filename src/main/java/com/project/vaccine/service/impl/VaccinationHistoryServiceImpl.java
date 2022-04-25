@@ -92,9 +92,36 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
         return vaccinationHistoryRepository.findAllByPatient_NameContainingAndVaccination_VaccinationType_VaccinationTypeId(name, 1, pageable);
     }
 
+
+
+
+    @Override
+    public List<VacHistoryRegisteredDTO> searchPeriodicVaccinationRegisteredWithStatusFalse(String name, Boolean status) {
+        return   vaccinationHistoryRepository.findPatientRegistedWithStatusFalse('%'+name +'%', status);
+    }
+
+    @Override
+    public List<VacHistoryRegisteredDTO> searchPeriodicVaccinationRegisteredWithStatusTrue(String name, Boolean status) {
+        return   vaccinationHistoryRepository.findPatientRegistedWithStatusTrue('%'+name +'%', status);
+    }
+
+    @Override
+    public List<VacHistoryRegisteredDTO> searchNoStatusPeriodicVaccinationNotStatus(String name) {
+        return   vaccinationHistoryRepository.findPatientRegistedWithNotStatus('%'+name +'%');
+    }
+
+
+
+
+
     @Override
     public Page<VaccinationHistory> finAllPeriodicVaccination(Pageable pageable) {
         return vaccinationHistoryRepository.findAllByVaccination_VaccinationType_VaccinationTypeId(1, pageable);
+    }
+
+    @Override
+    public List<VacHistoryRegisteredDTO> finAllPeriodicVaccinations() {
+        return vaccinationHistoryRepository.getListPatientRegisted();
     }
 
     @Override

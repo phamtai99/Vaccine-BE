@@ -1,9 +1,6 @@
 package com.project.vaccine.controller;
 
-import com.project.vaccine.dto.VaccinationHistoryFeedbackDTO;
-import com.project.vaccine.dto.VaccinationHistoryGetAfterStatusDTO;
-import com.project.vaccine.dto.VaccinationHistoryRegisteredDTO;
-import com.project.vaccine.dto.VaccinationHistorySendFeedbackDTO;
+import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.VaccinationHistory;
 import com.project.vaccine.service.VaccinationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +60,17 @@ public class VaccinationHistoryController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/periodic-vaccination/listPatientRegistered", method = RequestMethod.GET)
+    public ResponseEntity< List<VacHistoryRegisteredDTO>> findAllPeriodicVaccinations() {
+        List<VacHistoryRegisteredDTO> list = vaccinationHistoryService.finAllPeriodicVaccinations();
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
     @RequestMapping(value = "/periodic-vaccination/search", method = RequestMethod.GET)
     public ResponseEntity<Page<VaccinationHistory>> searchPeriodicVaccination(@PageableDefault(size = 5) Pageable
                                                                                       pageable,
@@ -84,6 +92,29 @@ public class VaccinationHistoryController {
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+
+    @RequestMapping(value = "/periodic-vaccination/searchPatientRegistered", method = RequestMethod.GET)
+    public ResponseEntity<List<VacHistoryRegisteredDTO>> searchPeriodicVaccinationRegistered(
+                                                                              @RequestParam(defaultValue = "") String name,
+                                                                              @RequestParam(defaultValue = "") String status) {
+        List<VacHistoryRegisteredDTO> list = null;
+        Boolean statusNew;
+        if (status.equals("")) {
+            list = vaccinationHistoryService.searchNoStatusPeriodicVaccinationNotStatus(name );
+        } else if (status.equals("true")) {
+            statusNew = true;
+            list = vaccinationHistoryService.searchPeriodicVaccinationRegisteredWithStatusTrue(name, statusNew );
+        } else if (status.equals("false")) {
+            statusNew = false;
+            list = vaccinationHistoryService.searchPeriodicVaccinationRegisteredWithStatusFalse(name, statusNew);
+        }
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
 
 
     /**

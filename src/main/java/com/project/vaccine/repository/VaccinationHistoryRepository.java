@@ -1,6 +1,7 @@
 package com.project.vaccine.repository;
 
 
+import com.project.vaccine.dto.VacHistoryRegisteredDTO;
 import com.project.vaccine.dto.VaccinationHistoryFeedbackDTO;
 import com.project.vaccine.dto.VaccinationHistoryGetAfterStatusDTO;
 import com.project.vaccine.dto.VaccinationHistoryRegisteredDTO;
@@ -49,6 +50,53 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             " WHERE vaccination_history_id = ?1", nativeQuery = true)
     void updateFeedbackVaccinationHistory(Integer vaccinationHistoryId, String vaccinationHistoryAfterStatus);
 
+
+    @Query(value = " SELECT vc.date as vaccinationDate, vc.start_time as startTime, vc.end_time as endTime, \n" +
+            "   p.name , p.guardian,p.address, p.date_of_birth as dateOfBirth, p.gender, p.phone,p.patient_id as patientId, \n" +
+            "  v.name as vaccineName,vh.status , vh.vaccination_times as vaccinationTimes , vh.vaccination_history_id as vaccinationHistoryId   \n"+
+            "  FROM new_vaccine_maneger.vaccination_history as vh \n"+
+            "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
+            " join patient as p on p.patient_id=vh.patient_id \n" +
+            "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
+            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=1", nativeQuery = true)
+    List<VacHistoryRegisteredDTO> getListPatientRegisted();
+
+
+
+    @Query(value = " SELECT vc.date as vaccinationDate, vc.start_time as startTime, vc.end_time as endTime, \n" +
+            "   p.name , p.guardian,p.address, p.date_of_birth as dateOfBirth, p.gender, p.phone,p.patient_id as patientId, \n" +
+            "  v.name as vaccineName,vh.status , vh.vaccination_times as vaccinationTimes , vh.vaccination_history_id as vaccinationHistoryId   \n"+
+            "  FROM new_vaccine_maneger.vaccination_history as vh \n"+
+            "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
+            " join patient as p on p.patient_id=vh.patient_id \n" +
+            "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
+            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=1  and p.name like ?1 \n" +
+            "   and vh.status is null ", nativeQuery = true)
+    List<VacHistoryRegisteredDTO> findPatientRegistedWithStatusFalse(String name, Boolean status);
+
+
+
+    @Query(value = " SELECT vc.date as vaccinationDate, vc.start_time as startTime, vc.end_time as endTime, \n" +
+            "   p.name , p.guardian,p.address, p.date_of_birth as dateOfBirth, p.gender, p.phone,p.patient_id as patientId, \n" +
+            "  v.name as vaccineName,vh.status , vh.vaccination_times as vaccinationTimes , vh.vaccination_history_id as vaccinationHistoryId   \n"+
+            "  FROM new_vaccine_maneger.vaccination_history as vh \n"+
+            "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
+            " join patient as p on p.patient_id=vh.patient_id \n" +
+            "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
+            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=1  and p.name like ?1 \n" +
+            "   and vh.status =true ", nativeQuery = true)
+    List<VacHistoryRegisteredDTO> findPatientRegistedWithStatusTrue(String name, Boolean status);
+
+    @Query(value = " SELECT vc.date as vaccinationDate, vc.start_time as startTime, vc.end_time as endTime, \n" +
+            "   p.name , p.guardian,p.address, p.date_of_birth as dateOfBirth, p.gender, p.phone,p.patient_id as patientId, \n" +
+            "  v.name as vaccineName,vh.status , vh.vaccination_times as vaccinationTimes , vh.vaccination_history_id as vaccinationHistoryId   \n"+
+            "  FROM new_vaccine_maneger.vaccination_history as vh \n"+
+            "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
+            " join patient as p on p.patient_id=vh.patient_id \n" +
+            "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
+            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=1  and p.name like ?1 \n" , nativeQuery = true)
+    List<VacHistoryRegisteredDTO> findPatientRegistedWithNotStatus(String name);
+
     @Query(value = "select after_status as afterStatus from vaccination_history where vaccination_history_id = ?1", nativeQuery = true)
     VaccinationHistoryGetAfterStatusDTO getAfterStatus(Integer vaccinationHistoryId);
 
@@ -59,7 +107,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
 
     @Query(value = "select email from vaccination join vaccination_history " +
             "on vaccination.vaccination_id = vaccination_history.vaccination_id " +
-            "join patient on patient.patient_id = vaccination_history.patient_id WHERE date >= curdate()+1", nativeQuery = true)
+            "join patient on patient.patient_id = vaccination_history.patient_id WHERE date = curdate()+1", nativeQuery = true)
     List<String> getAllEmailToSend();
 
     @Query(value = "select email from vaccination join vaccination_history " +

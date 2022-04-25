@@ -86,7 +86,7 @@ public class VaccinationController {
     public ResponseEntity<List<RegistrablePeriodicalVaccinationDTO>> findCustomList(@RequestBody PeriodicalSearchDataDTO searchData) {
         List<RegistrablePeriodicalVaccinationDTO> registrableVaccinationList = this.vaccinationService.findCustomVaccination(searchData);
         if (registrableVaccinationList.size() == 0) {
-            return new ResponseEntity<>(registrableVaccinationList,HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(registrableVaccinationList, HttpStatus.OK);
     }
