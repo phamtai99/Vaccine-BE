@@ -182,6 +182,18 @@ public class VaccinationHistoryController {
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+//    Lấy danh sách bệnh nhân đăng kí tiêm chủng theo yêu cầu
+    @RequestMapping(value = "/registered-for-vaccination/AllRegisteredVaccinationHisTry", method = RequestMethod.GET)
+    public ResponseEntity<List<VacHistoryRegisteredDTO>> getAllRegisteredVaccinationHistory( ) {
+        List<VacHistoryRegisteredDTO> list = vaccinationHistoryService.getAllRegisteredRequiredHistory();
+
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
 
     /**
      * search and paging
@@ -207,6 +219,30 @@ public class VaccinationHistoryController {
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+
+
+//  Tìm kiếm danh sách bênh nhân đăng kí theo yêu cầu ko phân trang
+    @RequestMapping(value = "/registered-for-vaccination/searchRegisteredVaccination", method = RequestMethod.GET)
+    public ResponseEntity<List<VacHistoryRegisteredDTO>> searchRegisteredVaccination(  @RequestParam(defaultValue = "") String name,
+                                                                                @RequestParam(defaultValue = "") String status ) {
+        List<VacHistoryRegisteredDTO> list = null;
+        Boolean statusNew;
+        if (status.equals("")) {
+            list = vaccinationHistoryService.searchVaccinationRegisteredNotStatus(name);
+        } else if (status.equals("true")) {
+            statusNew = true;
+            list = vaccinationHistoryService.searchVaccinationRegisteredWithStatusTrue(name, statusNew);
+        } else if (status.equals("false")) {
+            statusNew = false;
+            list = vaccinationHistoryService.searchVaccinationRegisteredWithStatusFalse(name, statusNew );
+        }
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
 
     /**
      * find by id

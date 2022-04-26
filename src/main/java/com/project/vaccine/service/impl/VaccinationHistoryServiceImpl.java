@@ -110,6 +110,32 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
         return   vaccinationHistoryRepository.findPatientRegistedWithNotStatus('%'+name +'%');
     }
 
+    @Override
+    public List<VacHistoryRegisteredDTO> searchVaccinationRegisteredWithStatusFalse(String name, Boolean status) {
+        return vaccinationHistoryRepository.findPatientRegistedHistryWithStatusFalse('%'+name +'%', status);
+    }
+
+    @Override
+    public List<VacHistoryRegisteredDTO> searchVaccinationRegisteredWithStatusTrue(String name, Boolean status) {
+        return vaccinationHistoryRepository.findPatientRegistedHistryWithStatusTrue('%'+name +'%', status);
+    }
+
+    @Override
+    public List<VacHistoryRegisteredDTO> searchVaccinationRegisteredNotStatus(String name) {
+        return vaccinationHistoryRepository.findPatientRegistedHistryWithNotStatus('%'+name +'%');
+    }
+
+
+    @Override
+    public List<VacHistoryRegisteredDTO> getAllRegisteredRequiredHistory() {
+        return   vaccinationHistoryRepository.getAllRegisteredVaccinationHisTry();
+    }
+
+
+
+
+
+
 
 
 

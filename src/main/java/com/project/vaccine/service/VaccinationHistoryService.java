@@ -40,6 +40,17 @@ public interface VaccinationHistoryService {
 
     List<VacHistoryRegisteredDTO> searchNoStatusPeriodicVaccinationNotStatus(String name);
 
+
+    List<VacHistoryRegisteredDTO> searchVaccinationRegisteredWithStatusFalse(String name, Boolean status);
+
+    List<VacHistoryRegisteredDTO> searchVaccinationRegisteredWithStatusTrue(String name, Boolean status);
+
+    List<VacHistoryRegisteredDTO> searchVaccinationRegisteredNotStatus(String name);
+
+
+
+    List<VacHistoryRegisteredDTO>  getAllRegisteredRequiredHistory();
+
     Page<VaccinationHistory> finAllPeriodicVaccination(Pageable pageable);
 
     List<VacHistoryRegisteredDTO> finAllPeriodicVaccinations();
