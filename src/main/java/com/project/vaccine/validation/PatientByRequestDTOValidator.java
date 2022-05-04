@@ -54,9 +54,10 @@ public class PatientByRequestDTOValidator implements Validator {
         }
         if (patientDTO.getEmail() == null) {
             errors.rejectValue("email", "email.null", "Email không được để trống");
-        } else if (!Pattern.compile("^\\w{5,}.?\\w+(@\\w{3,8})(.\\w{3,8})+$").matcher(patientDTO.getEmail()).find()) {
-            errors.rejectValue("email", "email.format", "Email không đúng định dạng");
         }
+//        else if (!Pattern.compile("^\\w{5,}.?\\w+(@\\w{3,8})(.\\w{3,8})+$").matcher(patientDTO.getEmail()).find()) {
+//            errors.rejectValue("email", "email.format", "Email không đúng định dạng");
+//        }
         if (patientDTO.getPhone() == null) {
             errors.rejectValue("phone", "phone.null", "Số điện thoại không được để trống");
         } else if (!Pattern.compile("^(0|\\(\\+84\\))\\d{9}$").matcher(patientDTO.getPhone()).find()) {
