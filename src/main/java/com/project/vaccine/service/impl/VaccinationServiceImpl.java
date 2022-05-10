@@ -1,17 +1,24 @@
 package com.project.vaccine.service.impl;
 
+import com.project.vaccine.controller.SecurityController;
 import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.Vaccination;
 import com.project.vaccine.entity.VaccinationHistory;
 import com.project.vaccine.repository.*;
 import com.project.vaccine.service.VaccinationService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class VaccinationServiceImpl implements VaccinationService {
+    private static Logger logger= LogManager.getLogger(VaccinationServiceImpl.class);
+
+
     @Autowired
     private VaccinationRepository vaccinationRepository;
     @Autowired
@@ -109,12 +116,37 @@ public class VaccinationServiceImpl implements VaccinationService {
         Long maximumRegister = this.storageRepository.findAllByVaccine_VaccineIdIs(vaccineId).getQuantity();
         System.out.println("maximum register : " + maximumRegister);
         register.setQuantityIsValid(registerQuantity+1 <= maximumRegister);
-        List<VaccinationHistory> listTime=this.vaccinationHistoryRepository.findAllByVaccination_VaccinationIdIsAndStartTimeContainsAndEndTimeContains(register.getVaccinationId(), register.getStartTime(), register.getEndTime());
-        register.setTimeIsValid(listTime.size()+1 < 3);
+//        List<VaccinationHistory> listTime=this.vaccinationHistoryRepository.findAllByVaccination_VaccinationIdIsAndStartTimeContainsAndEndTimeContains(register.getVaccinationId(), register.getStartTime(), register.getEndTime());
+        List<Vaccination> listTime=this.vaccinationRepository.findAllByVaccinationIdAndStartTimeEndTime(register.getVaccinationId(), register.getStartTime(), register.getEndTime());
+
+
+        register.setTimeIsValid(listTime.size() > 0);
         String vaccineName = this.vaccineRepository.getOne(vaccineId).getName();
 
         List<VaccinationHistory> list=this.vaccinationHistoryRepository.findAllByPatient_PatientIdAndVaccination_Vaccine_NameIsAndDeleteFlagIs(register.getPatientId(), vaccineName, false);
         register.setAlreadyRegister(list.size() > 0);
         return register;
+    }
+
+    @Override
+    public Integer getVaccineId(int vaccinationId) {
+        Integer vaccineId= null;
+        try {
+            vaccineId=this.vaccinationRepository.getVaccineId(vaccinationId);
+        }catch (Exception ex){
+            logger.error(" Lỗi getVaccineId :" + ex);
+        }
+        return vaccineId;
+    }
+
+    @Override
+    public List<Integer> getAllVaccinationIdbyPatientAndVaccineId(Integer patientId, Integer vaccineId) {
+        List<Integer> listVaccinationId=new ArrayList<Integer>();
+        try {
+            listVaccinationId=this.vaccinationRepository.getVaccinationIdByVaccineId(patientId, vaccineId);
+        }catch (Exception ex){
+            logger.error(" Lỗi getAllVaccinationIdbyPatientAndVaccineId :"+ex);
+        }
+        return listVaccinationId;
     }
 }

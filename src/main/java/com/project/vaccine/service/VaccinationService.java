@@ -45,4 +45,9 @@ public interface VaccinationService {
     List<RegistrablePeriodicalVaccinationDTO> findCustomVaccination(PeriodicalSearchDataDTO searchData);
 
     PeriodicalVaccinationTempRegisterDTO checkRegister(PeriodicalVaccinationTempRegisterDTO register);
+
+
+    Integer getVaccineId(int vaccinationId);
+
+    List<Integer> getAllVaccinationIdbyPatientAndVaccineId(Integer patientId, Integer vaccineId);
 }

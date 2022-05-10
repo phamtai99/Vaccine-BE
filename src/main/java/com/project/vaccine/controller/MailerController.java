@@ -47,7 +47,7 @@ public class MailerController {
                     + "TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI xin thông báo, vào ngày " + day + "  trung tâm tổ chức tiêm chủng mở rộng "
                     + "\ntại TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI. \n " +
                     "  Địa chỉ: 70 Nguyễn Chí Thanh, Láng Thượng, Ba Đình, Hà Nội, Việt Nam. \n" +
-                    "  Giờ mở cửa:  Sáng: 07:30–11:00, Chiều: 13:30–16:30.");
+                    "  Giờ mở cửa:  Sáng: 07:00–11:00, Chiều: 13:00–17:00.");
 
             // Send Message!
             this.emailSender.send(message);

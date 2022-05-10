@@ -63,7 +63,7 @@ public interface VaccinationHistoryService {
 
     void updateStatusVaccinationHistory(Boolean status, String preStatus, Integer id);
 
-    void cancelRegister(int vaccinationId, int patientId);
+    void cancelRegister(List<Integer> vaccinationId, int patientId);
 
     void sendMailFeedbackForAdmin(String value, String accountEmail) throws MessagingException, UnsupportedEncodingException;
 

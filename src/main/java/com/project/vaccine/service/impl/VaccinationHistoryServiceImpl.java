@@ -1,5 +1,6 @@
 package com.project.vaccine.service.impl;
 
+import com.project.vaccine.controller.VaccinationController;
 import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.Patient;
 import com.project.vaccine.entity.Vaccination;
@@ -7,6 +8,8 @@ import com.project.vaccine.entity.VaccinationHistory;
 import com.project.vaccine.entity.Vaccine;
 import com.project.vaccine.repository.*;
 import com.project.vaccine.service.VaccinationHistoryService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +26,7 @@ import java.util.List;
 
 @Service
 public class VaccinationHistoryServiceImpl implements VaccinationHistoryService {
+    private static Logger logger= LogManager.getLogger(VaccinationHistoryServiceImpl.class);
 
     @Autowired
     private VaccinationHistoryRepository vaccinationHistoryRepository;
@@ -44,7 +48,7 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
 
     @Override
     public Page<VaccinationHistory> getAllVaccinationHistory(String vaccineName, String vaccinationDate, int patientId, Pageable pageable) {
-        return this.vaccinationHistoryRepository.findAllByVaccination_Vaccine_NameContainingAndVaccination_DateContainingAndPatient_PatientId(vaccineName, vaccinationDate, patientId, pageable);
+        return this.vaccinationHistoryRepository.findAllByVaccination_Vaccine_NameContainingAndVaccination_DateContainingAndPatient_PatientIdAndDeleteFlagFalse(vaccineName, vaccinationDate, patientId, pageable);
     }
 
     @Override
@@ -171,8 +175,14 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
     }
 
     @Override
-    public void cancelRegister(int vaccinationId, int patientId) {
-        this.vaccinationHistoryRepository.cancelRegister(vaccinationId, patientId);
+    public void cancelRegister(List<Integer> vaccinationId, int patientId) {
+
+        try {
+            this.vaccinationHistoryRepository.cancelRegister(vaccinationId, patientId);
+        }catch (Exception ex){
+            logger.error(" Lỗi hủy đăng kí tiêm : "+ ex);
+        }
+
     }
 
     @Override

@@ -27,7 +27,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
 
     Page<VaccinationHistory> findAllByVaccination_VaccinationType_VaccinationTypeId(Integer number, Pageable pageable);
 
-    Page<VaccinationHistory> findAllByVaccination_Vaccine_NameContainingAndVaccination_DateContainingAndPatient_PatientId(String vaccination_vaccine_name, String vaccination_date, int patient_id, Pageable pageable);
+    Page<VaccinationHistory> findAllByVaccination_Vaccine_NameContainingAndVaccination_DateContainingAndPatient_PatientIdAndDeleteFlagFalse(String vaccination_vaccine_name, String vaccination_date, int patient_id, Pageable pageable);
 
     @Query(value = "select patient.patient_id as patientId, patient.name as patientName, \n" +
             "patient.gender as patientGender, patient.date_of_birth as patientAge, location.name as location, \n" +
@@ -190,8 +190,8 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
 
     @Modifying
     @org.springframework.transaction.annotation.Transactional
-    @Query(value = "update vaccination_history set vaccination_history.delete_flag = true where vaccination_id = ?1 and patient_id = ?2", nativeQuery = true)
-    void cancelRegister(int vaccinationId, int patientId);
+    @Query(value = "update vaccination_history set vaccination_history.delete_flag = true where vaccination_id in  ?1 and patient_id = ?2", nativeQuery = true)
+    void cancelRegister(List<Integer> vaccinationId, int patientId);
 
     Page<VaccinationHistory> findAllByPatient_PatientIdAndDeleteFlag(Integer patient_patientId, Boolean deleteFlag, Pageable pageable);
 
@@ -210,6 +210,12 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
     List<VaccinationHistory> findAllByVaccination_VaccinationIdIs(Integer vaccinationId);
 
     List<VaccinationHistory> findAllByVaccination_VaccinationIdIsAndStartTimeContainsAndEndTimeContains(Integer vaccinationId, String startTime, String endTime);
+
+
+    List<VaccinationHistory> findAllByVaccination_VaccinationIdIsAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(Integer vaccinationId, String startTime, String endTime);
+
+
+
 
     List<VaccinationHistory> findAllByPatient_PatientIdAndVaccination_Vaccine_NameIsAndDeleteFlagIs(Integer patientId, String vaccineName, boolean status);
 }

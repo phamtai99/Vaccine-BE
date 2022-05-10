@@ -20,7 +20,7 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
             "join vaccine on vaccination.vaccine_id = vaccine.vaccine_id " +
             "join location on vaccination.location_id = location.location_id " +
             "join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
-            "where vaccination.date > now() and vaccination.vaccination_type_id = 1 and vaccination.vaccination_id = ?1 ", nativeQuery = true)
+            "where vaccination.date >= now() +1  and vaccination.vaccination_type_id = 1 and vaccination.vaccination_id = ?1 ", nativeQuery = true)
     RegistrablePeriodicalVaccinationDTO findRegistrableVaccinationById(Integer id);
 
     /**
@@ -104,7 +104,7 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
             "join location on vaccination.location_id = location.location_id " +
             "join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
             "where vaccine.age like ?1 " +
-            "and vaccination.date > now()  " +
+            "and vaccination.date >= now() +1  " +
             "and vaccination.start_time like ?2  " +
             "and vaccination.end_time like ?3  " +
             "and vaccine.name like ?4  " +
@@ -113,5 +113,25 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
             " and vaccination.vaccination_type_id = 1"
             , nativeQuery = true)
     List<RegistrablePeriodicalVaccinationDTO> findCustomListWithPageWithoutDate(String age, String startTime, String endTime, String vaccineName, String description);
+
+
+
+    @Query(value = "select * from vaccination as vc " +
+            "where  vc.vaccination_id= ?1  " +
+            "and vc.start_time <= ?2    "  +
+            "and vc.end_time >= ?3    " , nativeQuery = true)
+    List<Vaccination> findAllByVaccinationIdAndStartTimeEndTime(Integer vaccinationId, String startTime, String endTime);
+
+
+    @Query(value = " select vc.vaccine_id  from vaccination as vc where vc.vaccination_id= ?1  " , nativeQuery = true)
+    Integer getVaccineId(int vaccinationId);
+
+
+    @Query(value = "select vc.vaccination_id from vaccination vc   " +
+            " inner join vaccination_history vh on vh.vaccination_id = vc.vaccination_id    " +
+            " where vh.patient_id=?1     "  +
+            " and vc.vaccine_id=?2    " , nativeQuery = true)
+    List<Integer> getVaccinationIdByVaccineId(Integer patientId,Integer vaccineId);
+
 
 }

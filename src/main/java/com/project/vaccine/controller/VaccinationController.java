@@ -3,9 +3,12 @@ package com.project.vaccine.controller;
 import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.VaccinationHistory;
 import com.project.vaccine.payload.request.VerifyRequest;
+import com.project.vaccine.repository.VaccinationRepository;
 import com.project.vaccine.service.AccountService;
 import com.project.vaccine.service.VaccinationHistoryService;
 import com.project.vaccine.service.VaccinationService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +26,8 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200")
 @RequestMapping("/api/public/vaccination")
 public class VaccinationController {
+
+    private static Logger logger= LogManager.getLogger(VaccinationController.class);
     @Autowired
     private VaccinationService vaccinationService;
 
@@ -32,6 +37,9 @@ public class VaccinationController {
     @Autowired
     private VaccinationHistoryService vaccinationHistoryService;
 
+
+    @Autowired
+    private VaccinationRepository vaccinationRepository;
 
     /**
      *display list of registrable periodical vaccinations
@@ -114,9 +122,15 @@ public class VaccinationController {
         System.out.println(code.getCode());
         int vaccinationId = Integer.parseInt(code.getCode().substring(0,code.getCode().indexOf("|")));
         System.out.println(vaccinationId);
+        int vaccineId= this.vaccinationService.getVaccineId(vaccinationId);
+
         int patientId = Integer.parseInt(code.getCode().substring(code.getCode().indexOf("|")+1));
         System.out.println(patientId);
-        this.vaccinationHistoryService.cancelRegister(vaccinationId, patientId);
+
+        List<Integer> listVaccinationId= this.vaccinationService.getAllVaccinationIdbyPatientAndVaccineId(patientId, vaccineId);
+        logger.info(" List vaccinationId :"+ listVaccinationId);
+
+        this.vaccinationHistoryService.cancelRegister(listVaccinationId, patientId);
     }
 
     /**
