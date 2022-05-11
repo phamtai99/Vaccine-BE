@@ -83,4 +83,7 @@ public interface VaccinationHistoryService {
 
     void sendMail(VaccinationByRequestDTO vaccinationByRequestDTO, Patient patientTemp, Vaccine vaccineTemp, Vaccination vaccination) throws MessagingException, UnsupportedEncodingException;
 
+
+
+    Integer getVaccineId(int vaccinationId);
 }

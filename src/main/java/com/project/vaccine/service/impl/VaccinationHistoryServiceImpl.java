@@ -238,6 +238,19 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
 
     }
 
+
+
+    @Override
+    public Integer getVaccineId(int vaccinationId) {
+        Integer vaccineId= null;
+        try {
+            vaccineId=this.vaccinationHistoryRepository.getVaccineId(vaccinationId);
+        }catch (Exception ex){
+            logger.error(" Lỗi getVaccineId :" + ex);
+        }
+        return vaccineId;
+    }
+
     @Override
     public VaccinationHistory createNewRegister(PeriodicalVaccinationTempRegisterDTO register) {
         Vaccination firstVaccination = this.vaccinationRepository.getOne(register.getVaccinationId());

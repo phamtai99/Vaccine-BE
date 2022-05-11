@@ -58,7 +58,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
             " join patient as p on p.patient_id=vh.patient_id \n" +
             "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
-            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=1", nativeQuery = true)
+            "  where  vc.delete_flag=0  and  vh.delete_flag=false and   vc.vaccination_type_id=1", nativeQuery = true)
     List<VacHistoryRegisteredDTO> getListPatientRegisted();
 
 
@@ -70,7 +70,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
             " join patient as p on p.patient_id=vh.patient_id \n" +
             "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
-            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=1  and p.name like ?1 \n" +
+            "  where  vc.delete_flag=0  and    vh.delete_flag=false and   vc.vaccination_type_id=1  and p.name like ?1 \n" +
             "   and vh.status is null or vh.status =false ", nativeQuery = true)
     List<VacHistoryRegisteredDTO> findPatientRegistedWithStatusFalse(String name, Boolean status);
 
@@ -84,7 +84,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
             " join patient as p on p.patient_id=vh.patient_id \n" +
             "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
-            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=2", nativeQuery = true)
+            "  where  vc.delete_flag=0 and vh.delete_flag=false  and   vc.vaccination_type_id=2", nativeQuery = true)
     List<VacHistoryRegisteredDTO> getAllRegisteredVaccinationHisTry();
 
 
@@ -95,7 +95,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
             " join patient as p on p.patient_id=vh.patient_id \n" +
             "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
-            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=1  and p.name like ?1 \n" +
+            "  where  vc.delete_flag=0  and    vh.delete_flag=false and   vc.vaccination_type_id=1  and p.name like ?1 \n" +
             "   and vh.status =true ", nativeQuery = true)
     List<VacHistoryRegisteredDTO> findPatientRegistedWithStatusTrue(String name, Boolean status);
 
@@ -106,7 +106,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
             " join patient as p on p.patient_id=vh.patient_id \n" +
             "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
-            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=1  and p.name like ?1 \n" , nativeQuery = true)
+            "  where  vc.delete_flag=0   and    vh.delete_flag=false and   vc.vaccination_type_id=1  and p.name like ?1 \n" , nativeQuery = true)
     List<VacHistoryRegisteredDTO> findPatientRegistedWithNotStatus(String name);
 
 
@@ -119,7 +119,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
             " join patient as p on p.patient_id=vh.patient_id \n" +
             "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
-            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=2  and p.name like ?1 \n" +
+            "  where  vc.delete_flag=0  and   vh.delete_flag=false  and   vc.vaccination_type_id=2  and p.name like ?1 \n" +
             "   and vh.status =true ", nativeQuery = true)
     List<VacHistoryRegisteredDTO> findPatientRegistedHistryWithStatusTrue(String name, Boolean status);
 
@@ -130,7 +130,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
             " join patient as p on p.patient_id=vh.patient_id \n" +
             "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
-            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=2  and p.name like ?1 \n" , nativeQuery = true)
+            "  where  vc.delete_flag=0  and    vh.delete_flag=false  and   vc.vaccination_type_id=2  and p.name like ?1 \n" , nativeQuery = true)
     List<VacHistoryRegisteredDTO> findPatientRegistedHistryWithNotStatus(String name);
 
     @Query(value = " SELECT vc.date as vaccinationDate, vc.start_time as startTime, vc.end_time as endTime, \n" +
@@ -140,7 +140,7 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "join vaccination as vc  on vh.vaccination_id = vc.vaccination_id \n" +
             " join patient as p on p.patient_id=vh.patient_id \n" +
             "join vaccine as v on v.vaccine_id=vc.vaccine_id \n"+
-            "  where  vc.delete_flag=0 and   vc.vaccination_type_id=2  and p.name like ?1 \n" +
+            "  where  vc.delete_flag=0  and    vh.delete_flag=false and   vc.vaccination_type_id=2  and p.name like ?1 \n" +
             "   and vh.status is null or vh.status =false  ", nativeQuery = true)
     List<VacHistoryRegisteredDTO> findPatientRegistedHistryWithStatusFalse(String name, Boolean status);
 
@@ -215,7 +215,10 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
     List<VaccinationHistory> findAllByVaccination_VaccinationIdIsAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(Integer vaccinationId, String startTime, String endTime);
 
 
-
+    @Query(value = "  select vc.vaccine_id from vaccination_history vh   " +
+            "join vaccination vc on vh.vaccination_id = vc.vaccination_id   " +
+            "where vh.vaccination_history_id= ?1 " , nativeQuery = true)
+    Integer getVaccineId(int vaccinationId);
 
     List<VaccinationHistory> findAllByPatient_PatientIdAndVaccination_Vaccine_NameIsAndDeleteFlagIs(Integer patientId, String vaccineName, boolean status);
 }

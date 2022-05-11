@@ -115,8 +115,8 @@ public class VaccinationController {
 //        return new ResponseEntity<>(pages, HttpStatus.OK);
 //    }
     /**
-    *
-    */
+     *
+     */
     @PostMapping("/cancel")
     public void VerifyCancel(@RequestBody VerifyRequest code) {
         System.out.println(code.getCode());

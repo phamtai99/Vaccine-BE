@@ -1,8 +1,11 @@
 package com.project.vaccine.controller;
 
 import com.project.vaccine.dto.*;
+import com.project.vaccine.entity.Storage;
 import com.project.vaccine.entity.VaccinationHistory;
+import com.project.vaccine.service.StorageService;
 import com.project.vaccine.service.VaccinationHistoryService;
+import com.project.vaccine.service.VaccinationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +26,12 @@ public class VaccinationHistoryController {
 
     @Autowired
     private VaccinationHistoryService vaccinationHistoryService;
+
+    @Autowired
+    private StorageService storageService;
+
+    @Autowired
+    private VaccinationService vaccinationService;
 
     /**
      *
@@ -266,6 +275,14 @@ public class VaccinationHistoryController {
         List<VaccinationHistoryRegisteredDTO> vaccinationHistory = vaccinationHistoryService.findId(id);
         if (vaccinationHistory == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        int vaccineId= this.vaccinationHistoryService.getVaccineId(id);
+        Storage storageList = storageService.getStorage(vaccineId);
+        if (storageList.getQuantity() > 1){
+            storageList.setQuantity(storageList.getQuantity() - 1);
+            storageService.saveStorage(storageList);
+        }else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         vaccinationHistoryService.updateStatusVaccinationHistory(true,preStatus,id);
         return new ResponseEntity<>(HttpStatus.OK);
