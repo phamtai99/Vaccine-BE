@@ -82,6 +82,12 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
     }
 
     @Override
+    public List<VaccinationForEmail> getAllVaccinationForEmail() {
+        return vaccinationHistoryRepository.getAllVaccinationForEmailToSend();
+    }
+
+
+    @Override
     public List<String> getEmailToSendOfVaccinationMore() {
         return vaccinationHistoryRepository.getEmailToSendOfVaccinationMore();
     }
@@ -217,19 +223,19 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
         helper.setFrom("taipt3351@gmail.com", "TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI");
         helper.setSubject(subject);
         mailContent = "<span style=\"font-weight: bold\">Xin chào<span> " + patientTemp.getGuardian() + ",</span></span>\n" +
-                "<br><br>\n" +
+                "<br>\n" +
                 "<span style=\"font-weight: bold\"> " + patientTemp.getName() + "</span> <span>vừa được đăng ký tiêm chủng định kỳ với thông tin sau:</span>\n" +
-                "<br><br>\n" +
+                "<br>\n" +
                 "<span style=\"font-weight: bold\"> Ngày tiêm chủng: </span><span>" + vaccinationByRequestDTO.getDateVaccination() + "</span>\n" +
-                "<br><br>\n" +
+                "<br>\n" +
                 "<span style=\"font-weight: bold\"> Giờ tiêm chủng: </span><span>" + vaccination.getStartTime() + "  - " + vaccination.getEndTime() + "</span>\n" +
-                "<br><br>\n" +
+                "<br>\n" +
                 "<span style=\"font-weight: bold\"> Địa điểm: </span><span>" + vaccination.getLocation().getName() + " </span>\n" +
-                "<br><br>\n" +
+                "<br>\n" +
                 "<span style=\"font-weight: bold\"> Tên Vắc xin: </span><span>" + vaccineTemp.getName() + " </span>\n" +
-                "<br><br>\n" +
+                "<br>\n" +
                 "<span style=\"font-weight: bold\"> Xuất xứ: </span><span>" + vaccineTemp.getOrigin() + " </span>\n" +
-                "<br><br>\n" +
+                "<br>\n" +
                 "<p style=\"font-style: italic; color: red\">Trong trường hợp bạn không thể tham gia vì lý do nào đó, bạn có thể hủy đăng ký bằng link bên dưới:</p>\n" +
                 "<h3><a href='" + cancelRegisterUrl + "'>Link hủy đăng ký!</a></h3>" +
                 "<p>TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI KÍNH BÁO</p>";

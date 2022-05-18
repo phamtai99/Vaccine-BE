@@ -91,7 +91,7 @@ public class VaccinationByRequest {
 
 
     /**
-     * Tạo mới đăng ký tiêm theo yêu cầu
+     * API đăng ký tiêm theo yêu cầu
      **/
     @PostMapping(value = "/public/vaccination/create")
     public ResponseEntity<?> registerPatient(@Valid @RequestBody VaccinationByRequestDTO vaccinationByRequestDTO,

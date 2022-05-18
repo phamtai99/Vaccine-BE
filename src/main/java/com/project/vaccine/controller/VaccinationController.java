@@ -53,7 +53,7 @@ public class VaccinationController {
         return new ResponseEntity<>(registrableVaccination, HttpStatus.OK);
     }
     /**
-     * Method for saving patient and register for periodical vaccination
+     * API đăng kí lịch tiêm chủng định kì
      */
     @PostMapping("/register-patient")
     public ResponseEntity<Boolean> savePeriodicalVaccinationRegister(@RequestBody PeriodicalVaccinationTempRegisterDTO register) throws UnsupportedEncodingException, MessagingException {

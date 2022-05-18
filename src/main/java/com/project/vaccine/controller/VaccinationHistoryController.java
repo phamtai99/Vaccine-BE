@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,6 +33,25 @@ public class VaccinationHistoryController {
 
     @Autowired
     private VaccinationService vaccinationService;
+
+
+//    @RequestMapping(value = "/vaccination-historyssss", method = RequestMethod.GET)
+//    public ResponseEntity<List<VaccinationForEmail>> findAllVaccinationHistoryforer() {
+//
+//        List<VaccinationForEmail> vaccinationForEmailList= vaccinationHistoryService.getAllVaccinationForEmail();
+//        List<String> listEmail=new ArrayList<String>();
+//
+//        String location =vaccinationForEmailList.get(0).getLocation();
+//        String vaccineName=vaccinationForEmailList.get(0).getNameVaccine();
+//        String vaccineOrigin=vaccinationForEmailList.get(0).getOrigin();
+//        String startTime=vaccinationForEmailList.get(0).getStartTime();
+//        String endTime=vaccinationForEmailList.get(0).getEndTime();
+//        for (int i=0;i<vaccinationForEmailList.size();i++){
+//                listEmail.add(vaccinationForEmailList.get(i).getEmail());
+//        }
+//
+//        return new ResponseEntity<List<VaccinationForEmail>>(vaccinationForEmailList, HttpStatus.OK);
+//    }
 
     /**
      *

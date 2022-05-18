@@ -23,6 +23,12 @@ public interface VaccinationRepository extends JpaRepository<Vaccination,Integer
             "where vaccination.date >= now() +1  and vaccination.vaccination_type_id = 1 and vaccination.vaccination_id = ?1 ", nativeQuery = true)
     RegistrablePeriodicalVaccinationDTO findRegistrableVaccinationById(Integer id);
 
+    @Query(value = "select  location.name as location from vaccination    " +
+            " join vaccine on vaccination.vaccine_id = vaccine.vaccine_id     " +
+            " join location on vaccination.location_id = location.location_id     " +
+            "where  vaccination.vaccination_id = ?1   ", nativeQuery = true)
+    String getLocation(Integer vaccination_id);
+
     /**
      *find all age of vaccination
      */

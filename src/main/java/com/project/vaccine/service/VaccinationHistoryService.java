@@ -28,6 +28,8 @@ public interface VaccinationHistoryService {
 
     List<String> getAllEmailToSend();
 
+    List<VaccinationForEmail> getAllVaccinationForEmail();
+
     List<String> getEmailToSendOfVaccinationMore();
 
     Page<VaccinationHistory> searchPeriodicVaccination(String name, Boolean status, Pageable pageable);

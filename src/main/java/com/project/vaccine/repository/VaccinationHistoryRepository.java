@@ -1,10 +1,7 @@
 package com.project.vaccine.repository;
 
 
-import com.project.vaccine.dto.VacHistoryRegisteredDTO;
-import com.project.vaccine.dto.VaccinationHistoryFeedbackDTO;
-import com.project.vaccine.dto.VaccinationHistoryGetAfterStatusDTO;
-import com.project.vaccine.dto.VaccinationHistoryRegisteredDTO;
+import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.VaccinationHistory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -157,14 +154,39 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
     @Query(value = "INSERT INTO vaccination_history (vaccination_id, patient_id) VALUES (?1 , ?2)", nativeQuery = true)
     void savePeriodicalVaccinationRegister(Integer vaccinationId, int patientId);
 
-    @Query(value = "select email from vaccination join vaccination_history " +
-            "on vaccination.vaccination_id = vaccination_history.vaccination_id " +
-            "join patient on patient.patient_id = vaccination_history.patient_id WHERE date = curdate()+1", nativeQuery = true)
+    @Query(value = "select * from (select vc.date, vc.start_time as startTime, vc.end_time as endTime, vaccine.name as nameVaccine, vaccine.origin,vcs.email, vcs.name, lc.name as location from (  " +
+            " select vh.status as vh_status , vh.delete_flag as dlte, vh.vaccination_id as vc_id, patient.email, patient.name    " +
+            " from  vaccination_history as vh join patient on patient.patient_id = vh.patient_id where   patient.delete_flag=false ) as vcs  "
+            +"   join vaccination as vc on vc.vaccination_id = vcs.vc_id  join vaccine on vc.vaccine_id=vaccine.vaccine_id  join location as lc on lc.location_id=vc.location_id " +
+            "where vcs.dlte=false and  vcs.vh_status  is null or vcs.vh_status= false) as lvs where lvs.date=curdate()+1  ", nativeQuery = true)
+    List<VaccinationForEmail> getAllVaccinationForEmailToSend();
+
+    @Query(value = "select email from ( " +
+            "select  vc.date, patient.email " +
+            "from vaccination as vc " +
+            "join vaccination_history as vh  " +
+            "on vc.vaccination_id = vh.vaccination_id  " +
+            "join patient on patient.patient_id = vh.patient_id  " +
+            "where   vh.delete_flag=false   " +
+            "and  patient.delete_flag=false  " +
+            "and  vh.status  is null or vh.status= false) as vcn  " +
+            "where vcn.date = curdate()+1  ", nativeQuery = true)
     List<String> getAllEmailToSend();
 
-    @Query(value = "select email from vaccination join vaccination_history " +
-            "on vaccination.vaccination_id = vaccination_history.vaccination_id " +
-            "join patient on patient.patient_id = vaccination_history.patient_id where DATE_ADD(vaccination.date, INTERVAL vaccination.duration DAY) = curdate()+1", nativeQuery = true)
+//    @Query(value = "select email from vaccination join vaccination_history " +
+//            "on vaccination.vaccination_id = vaccination_history.vaccination_id " +
+//            "join patient on patient.patient_id = vaccination_history.patient_id where DATE_ADD(vaccination.date, INTERVAL vaccination.duration DAY) = curdate()+1", nativeQuery = true)
+//    List<String> getEmailToSendOfVaccinationMore();
+
+
+    @Query(value = "select distinct vcs.email from ( select vc.date, vaccine.duration, patient.email from vaccination as vc  " +
+            "join vaccination_history as vh on vc.vaccination_id = vh.vaccination_id  " +
+            "join patient on patient.patient_id = vh.patient_id  " +
+            "join vaccine on vc.vaccine_id=vaccine.vaccine_id  " +
+            "where   vh.delete_flag=false  and  patient.delete_flag=false  " +
+            "and  vh.status  is null or vh.status= false) as vcs  " +
+            " where DATE_ADD(vcs.date, INTERVAL vcs.duration DAY) = curdate()+1   "
+            , nativeQuery = true)
     List<String> getEmailToSendOfVaccinationMore();
 
     Page<VaccinationHistory> findAllByPatient_NameContainingAndVaccination_VaccinationType_VaccinationTypeIdAndStatusIs(String name, Integer id, Boolean status, Pageable pageable);

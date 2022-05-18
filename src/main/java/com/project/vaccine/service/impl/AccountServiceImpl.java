@@ -163,7 +163,7 @@ public class AccountServiceImpl implements AccountService {
         String subject = "Thông tin đăng ký tiêm chủng của bạn";
         String mailContent = "";
         String cancelRegisterUrl = "http://localhost:4200/cancel-register?code=" + randomCode;
-
+        String locationName= this.vaccinationRepository.getLocation(register.getVaccinationId());
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
         helper.setTo(patient.getEmail());
@@ -177,7 +177,7 @@ public class AccountServiceImpl implements AccountService {
                 "<br><br>\n" +
                 "<span style=\"font-weight: bold\"> Giờ tiêm chủng: </span><span>"+vaccinationHistory.getStartTime()+"  - "+vaccinationHistory.getEndTime()+"</span>\n" +
                 "<br><br>\n" +
-                "<span style=\"font-weight: bold\"> Địa điểm: </span><span> Trung Tâm y tế dự phòng - 70 Nguyễn Chí Thanh, Láng Thượng, Ba Đình, Hà Nội </span>\n" +
+                "<span style=\"font-weight: bold\"> Địa điểm: </span><span> " +locationName+" </span>\n" +
                 "<br><br>\n" +
                 "<span style=\"font-weight: bold\"> Tên Vắc xin: </span><span>"+vaccination.getVaccine().getName()+" </span>\n" +
                 "<br><br>\n" +
