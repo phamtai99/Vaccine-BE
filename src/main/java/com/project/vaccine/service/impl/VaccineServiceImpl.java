@@ -1,8 +1,8 @@
 package com.project.vaccine.service.impl;
 
-import com.project.vaccine.controller.SecurityController;
 import com.project.vaccine.dto.CreateVaccineDTO;
 import com.project.vaccine.dto.VaccineDTO;
+import com.project.vaccine.dto.VaccineFindIdDTO;
 import com.project.vaccine.entity.Vaccine;
 import com.project.vaccine.repository.VaccineRepository;
 import com.project.vaccine.service.VaccineService;
@@ -26,7 +26,28 @@ public class VaccineServiceImpl implements VaccineService {
 
     @Override
     public Vaccine findById(Integer id) {
-        return vaccineRepository.findByVaccineId(id);
+
+        Vaccine vaccine=new Vaccine();
+        try{
+            vaccine=vaccineRepository.findByVaccineId(id);
+        }catch (Exception ex){
+            logger.error(" Lỗi lấy vaccine theo id : "+ex);
+        }
+
+        return vaccine;
+    }
+
+    @Override
+    public VaccineFindIdDTO findVaccineById(Integer id) {
+
+        VaccineFindIdDTO vaccine=null ;
+        try{
+                vaccine =vaccineRepository.getInfoVaccineById(id);
+        }catch (Exception ex){
+            logger.error(" Lỗi lấy vaccine theo id : "+ex);
+        }
+
+        return vaccine;
     }
 
     @Override
@@ -105,4 +126,18 @@ public class VaccineServiceImpl implements VaccineService {
     public List<Vaccine> getAllVaccineByDuration(String name) {
         return vaccineRepository.getAllVaccineBySuggesssion('%' +name+ '%');
     }
+
+    @Override
+    public void editVaccine(Vaccine VaccineEditDTO) {
+        try{
+            vaccineRepository.editVaccine(VaccineEditDTO.getName(),VaccineEditDTO.getAge(),VaccineEditDTO.getExpired(), VaccineEditDTO.getLicenseCode(),
+                    VaccineEditDTO.getMaintenance(), VaccineEditDTO.getOrigin(), VaccineEditDTO.getDuration(),
+                    VaccineEditDTO.getTimes(), VaccineEditDTO.getDosage(), VaccineEditDTO.getVaccineId());
+        }catch (Exception ex){
+            logger.error(" Lỗi cập nhật thông tin vaccine : "+ ex);
+        }
+
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.project.vaccine.repository;
 
 import com.project.vaccine.dto.VaccineDTO;
+import com.project.vaccine.dto.VaccineFindIdDTO;
 import com.project.vaccine.entity.Vaccine;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,16 @@ public interface VaccineRepository extends JpaRepository<Vaccine, Integer> {
             "join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
             "where vaccine.vaccine_id = ?1", nativeQuery = true)
     VaccineDTO getVaccineById(Integer id);
+
+
+
+    @Query(value = "SELECT vaccine.vaccine_id as id,vaccine.name as name,vt.name as vaccineType,vaccine.license_code as licenseCode,vaccine.origin as origin,   " +
+            "  vaccine.dosage,invoice.price,  vaccine.expired , vaccine.maintenance as maintenance, vaccine.age , storage.quantity ,   " +
+            " vaccine.times, vaccine.duration ,vaccine.vaccine_type_id as vaccineTypeId " +
+            " FROM vaccine join vaccine_type as vt on vaccine.vaccine_type_id = vt.vaccine_type_id   "+
+            " join storage on storage.vaccine_id = vaccine.vaccine_id join invoice on vaccine.vaccine_id=invoice.vaccine_id   "+
+            " WHERE vaccine.delete_flag = 0 and vaccine.vaccine_id= ?1", nativeQuery = true)
+    VaccineFindIdDTO getInfoVaccineById(Integer id);
 
     @Query(value = "select vaccine.vaccine_id as id,vaccine.name as name, vaccine_type.name as vaccineType,invoice.transaction_date as dayReceive, " +
             "vaccine.license_code as licenseCode, vaccine.origin as origin, vaccine.dosage as dosage, " +
@@ -105,5 +116,14 @@ public interface VaccineRepository extends JpaRepository<Vaccine, Integer> {
             "and vaccine.delete_flag = 0 and vaccine.expired > now() and vaccine.name like ?1  " +
             "LIMIT 12  ", nativeQuery = true)
     List<Vaccine> getAllVaccineBySuggesssion(String name);
+
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "update vaccine as v set v.name = ?1, v.age=?2, v.expired = ?3, v.license_code = ?4, v.maintenance = ?5, " +
+            "v.origin = ?6, v.duration = ?7, v.times = ?8, v.dosage=?9 where v.vaccine_id = ?10", nativeQuery = true)
+    void editVaccine(String name,String age, String expired, String licenseCode, String maintenance,
+                     String origin, Integer duration, Integer times,Double dosage, Integer id);
 }
 

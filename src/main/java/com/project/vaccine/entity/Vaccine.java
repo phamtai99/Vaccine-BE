@@ -1,6 +1,8 @@
 package com.project.vaccine.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties("inspection")
 @Entity(name = "vaccine")
 public class Vaccine {
     @Id
@@ -31,16 +34,18 @@ public class Vaccine {
     private Integer duration;
 
     @OneToMany(mappedBy = "vaccine")
-    @JsonBackReference
+    @JsonIgnore
     private Set<Invoice> invoiceList;
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id", nullable = false)
     private VaccineType vaccineType;
     @OneToMany(mappedBy = "vaccine")
-    @JsonBackReference
+    @JsonIgnore
     private Set<Vaccination> vaccinationList;
     @OneToMany(mappedBy = "vaccine")
-    @JsonBackReference
+    @JsonIgnore
     private Set<Storage> storageList;
+
+
 
 }

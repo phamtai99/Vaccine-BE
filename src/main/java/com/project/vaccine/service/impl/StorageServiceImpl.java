@@ -35,6 +35,15 @@ public class StorageServiceImpl implements StorageService {
         storageRepository.createStorage(quantity,vaccineId);
     }
 
+    @Override
+    public void editStorage(int quantity, int vaccineId) {
+        try{
+             storageRepository.editStorage(quantity, vaccineId);
+        }catch (Exception ex){
+            logger.error("Lỗi chỉnh sửa số lượng còn lại của vaccine");
+        }
+    }
+
     /**
      * @param id
      * @return

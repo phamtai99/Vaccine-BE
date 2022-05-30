@@ -34,4 +34,10 @@ public interface StorageRepository extends JpaRepository<Storage,Integer> {
      * Get quantity of a vaccine
      */
     Storage findAllByVaccine_VaccineIdIs(Integer id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update storage   set quantity = ?1  where vaccine_id = ?2", nativeQuery = true)
+    void editStorage( int quantity,int id);
+
 }

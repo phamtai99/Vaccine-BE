@@ -20,5 +20,10 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
     @Query(value = "  insert into invoice(expired, price, quantity, transaction_date, provider_id, vaccine_id, delete_flag) \n" +
             "\tvalues(?, ?, ?, ?, ?, ?, b'0');", nativeQuery = true)
     void createInvoice(String expired, int price, int quantity, String transactionDate, int provideId, int vaccineId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update invoice   set price= = ?1  where vaccine_id = ?2", nativeQuery = true)
+    void editInvoice( int price,int id);
 }
 

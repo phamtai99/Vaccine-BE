@@ -17,6 +17,8 @@ public interface StorageService {
     */
    void createStorage(int quantity , int vaccineId);
 
+   void editStorage(int quantity, int vaccineId);
+
    /**
     * @param id
     * @return

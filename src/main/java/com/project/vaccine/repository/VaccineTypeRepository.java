@@ -27,4 +27,10 @@ public interface VaccineTypeRepository extends JpaRepository<VaccineType,Integer
      */
     @Query(value = "select * from vaccine_type where name = ?;",nativeQuery = true)
     VaccineType findName(String name);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update vaccine_type   set name = ?1  where vaccine_type_id = ?2", nativeQuery = true)
+    void editVaccineType( String name,int id);
+
 }

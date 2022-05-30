@@ -1,7 +1,7 @@
 package com.project.vaccine.dto;
 
 public interface VaccineDTO {
-    String getId();
+    Integer getId();
     String getName();
     String getVaccineType();
     String getDayReceive();

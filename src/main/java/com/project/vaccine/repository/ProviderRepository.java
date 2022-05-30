@@ -17,8 +17,8 @@ public interface ProviderRepository extends JpaRepository<Provider,Integer> {
      * @return
      */
     @Modifying
-    @Query(value = "insert into provider(name) values(?1);", nativeQuery = true)
-    void createProvider(String name);
+    @Query(value = "insert into provider(name, vaccine_id) values(?1, ?2);", nativeQuery = true)
+    void createProvider(String name, int vaccineId);
 
     /**
      *

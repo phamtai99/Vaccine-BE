@@ -18,6 +18,9 @@ public class Provider {
     private Integer providerId;
     private String name;
 
+    private Integer vaccineId;
+
+
     @OneToMany(mappedBy = "provider")
     @JsonBackReference
     private Set<Invoice> invoiceList;

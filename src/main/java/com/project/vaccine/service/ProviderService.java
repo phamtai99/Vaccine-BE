@@ -8,7 +8,7 @@ public interface ProviderService {
      * create Provider
      * @return
      */
-    void createProvider(String name);
+    void createProvider(String name, int vaccineId);
 
     /**
      * find by name Provider

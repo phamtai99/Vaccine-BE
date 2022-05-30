@@ -2,6 +2,7 @@ package com.project.vaccine.service;
 
 import com.project.vaccine.dto.CreateVaccineDTO;
 import com.project.vaccine.dto.VaccineDTO;
+import com.project.vaccine.dto.VaccineFindIdDTO;
 import com.project.vaccine.entity.Vaccine;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,8 @@ import java.util.List;
 public interface VaccineService {
 
     Vaccine findById(Integer id);
+
+    VaccineFindIdDTO findVaccineById(Integer id);
 
     void saveVaccine(Vaccine vaccine);
 
@@ -37,4 +40,6 @@ public interface VaccineService {
     Vaccine getVaccineByIdNameQuery(Integer id);
 
     List<Vaccine> getAllVaccineByDuration(String name );
+
+    void editVaccine(Vaccine VaccineEditDTO);
 }

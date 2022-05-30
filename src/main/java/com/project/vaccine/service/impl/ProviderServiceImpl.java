@@ -17,8 +17,8 @@ public class ProviderServiceImpl implements ProviderService {
      * @return
      */
     @Override
-    public void createProvider(String name) {
-        providerRepository.createProvider(name);
+    public void createProvider(String name, int vaccineId) {
+        providerRepository.createProvider(name, vaccineId);
     }
 
 

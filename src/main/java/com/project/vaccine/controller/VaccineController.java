@@ -1,7 +1,6 @@
 package com.project.vaccine.controller;
 
-import com.project.vaccine.dto.CreateVaccineDTO;
-import com.project.vaccine.dto.VaccineDTO;
+import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.Provider;
 import com.project.vaccine.entity.Vaccine;
 import com.project.vaccine.entity.VaccineType;
@@ -97,14 +96,7 @@ public class VaccineController {
     public ResponseEntity<Void> createVaccine(@RequestBody CreateVaccineDTO createVaccineDTO) {
         logger.info("Method to create vaccine for Admin ");
 
-        // Check provider
-        Provider provider = providerService.searchNameProvider(createVaccineDTO.getProvider());
 
-        if (provider == null) {
-            providerService.createProvider(createVaccineDTO.getProvider());
-            provider = providerService.searchNameProvider(createVaccineDTO.getProvider());
-        }
-        createVaccineDTO.setProvider(provider.getProviderId() + "");
 
 
         // Check vaccine type
@@ -120,7 +112,14 @@ public class VaccineController {
         vaccineService.createVaccine(createVaccineDTO);
 
         Vaccine vaccine = vaccineService.searchName(createVaccineDTO.getNameVaccine());
+        // Check provider
 
+
+
+        providerService.createProvider(createVaccineDTO.getProvider(), vaccine.getVaccineId());
+        Provider provider = providerService.searchNameProvider(createVaccineDTO.getProvider());
+
+        createVaccineDTO.setProvider(provider.getProviderId() + "");
         storageService.createStorage((int) createVaccineDTO.getQuantity(), vaccine.getVaccineId());
         invoiceService.createInvoice(createVaccineDTO.getExpired(), createVaccineDTO.getUnitPrice(),
                 (int) createVaccineDTO.getQuantity(), createVaccineDTO.getDayReceive(),
@@ -129,4 +128,33 @@ public class VaccineController {
 
         return new ResponseEntity<Void>(httpHeaders, HttpStatus.OK);
     }
+
+    /*
+     *  tim kiem nhan vien theo id
+     */
+    @GetMapping("/findVaccineByid/{id}")
+    public ResponseEntity<Vaccine> findById(@PathVariable Integer id) {
+        System.out.println(id);
+//        VaccineFindIdDTO vaccine=new VaccineFindIdDTO();
+//        VaccineFindIdDTO  vaccine = vaccineService.findVaccineById(id);
+        Vaccine vaccine =new Vaccine();
+        vaccine = vaccineService.findById(id);
+        if (vaccine == null) {
+            return new ResponseEntity<Vaccine>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<Vaccine>(vaccine, HttpStatus.OK);
+    }
+
+
+    @PutMapping("/edit-vaccine")
+    public ResponseEntity<?> editVaccine(@RequestBody Vaccine VaccineEditDTO) {
+        vaccineService.editVaccine(VaccineEditDTO);
+//        vaccineTypeService.editVaccineType(VaccineEditDTO.getVaccineType(), VaccineEditDTO.getVaccineType());
+//        invoiceService.editInvoice(VaccineEditDTO.getPrice(), VaccineEditDTO.getId());
+//        storageService.editStorage(VaccineEditDTO.getQuantity(), VaccineEditDTO.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
 }

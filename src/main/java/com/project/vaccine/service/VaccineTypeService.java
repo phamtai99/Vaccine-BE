@@ -14,4 +14,7 @@ public interface VaccineTypeService {
      * @return
      */
     VaccineType findVaccineType(String name);
+
+
+    void editVaccineType(int id, String name);
 }
