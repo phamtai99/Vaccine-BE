@@ -1,6 +1,7 @@
 package com.project.vaccine.service;
 
 import com.project.vaccine.dto.PeriodicalVaccinationTempRegisterDTO;
+import com.project.vaccine.dto.VaccinationUpdateDTO;
 import com.project.vaccine.entity.Account;
 import com.project.vaccine.entity.VaccinationHistory;
 
@@ -42,4 +43,13 @@ public interface AccountService {
      * Send info email to patient after register for a vaccination
      */
     void sendInfoEmail(PeriodicalVaccinationTempRegisterDTO register, VaccinationHistory vaccinationHistory) throws MessagingException, UnsupportedEncodingException;
+
+    /**
+     *
+     * Send info email to patient after register for a vaccination
+     */
+    void sendInfoUpdateEmail(VaccinationUpdateDTO updateVaccination) throws MessagingException, UnsupportedEncodingException;
+
+
+
 }

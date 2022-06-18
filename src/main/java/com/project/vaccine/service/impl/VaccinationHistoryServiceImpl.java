@@ -77,6 +77,11 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
     }
 
     @Override
+    public List<String> getAllEmailToSend(Integer vaccinationId) {
+        return this.vaccinationHistoryRepository.getEmailForUpdateVaccination(vaccinationId);
+    }
+
+    @Override
     public List<String> getAllEmailToSend() {
         return vaccinationHistoryRepository.getAllEmailToSend();
     }

@@ -23,7 +23,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "update invoice   set price= = ?1  where vaccine_id = ?2", nativeQuery = true)
+    @Query(value = "update invoice   " +
+            "  set price=  ?1  " +
+            "  where vaccine_id = ?2 ; ", nativeQuery = true)
     void editInvoice( int price,int id);
 }
 

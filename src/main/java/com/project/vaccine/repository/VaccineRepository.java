@@ -34,7 +34,7 @@ public interface VaccineRepository extends JpaRepository<Vaccine, Integer> {
 
 
 
-    @Query(value = "SELECT vaccine.vaccine_id as id,vaccine.name as name,vt.name as vaccineType,vaccine.license_code as licenseCode,vaccine.origin as origin,   " +
+    @Query(value = "SELECT vaccine.vaccine_id as vaccineId,vaccine.name as name,vt.name as vaccineType,vaccine.license_code as licenseCode,vaccine.origin as origin,   " +
             "  vaccine.dosage,invoice.price,  vaccine.expired , vaccine.maintenance as maintenance, vaccine.age , storage.quantity ,   " +
             " vaccine.times, vaccine.duration ,vaccine.vaccine_type_id as vaccineTypeId " +
             " FROM vaccine join vaccine_type as vt on vaccine.vaccine_type_id = vt.vaccine_type_id   "+

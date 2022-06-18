@@ -138,10 +138,10 @@ public class EmployeeController {
     public ResponseEntity<?> createVaccinations(@Valid @RequestBody EmployeeDto employeeDto, BindingResult
             bindingResult) throws MessagingException {
         logger.debug(" Method to create employee from admin");
-        employeeCreateByRequestDtoValidator.validate(employeeDto, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
-        }
+//        employeeCreateByRequestDtoValidator.validate(employeeDto, bindingResult);
+//        if (bindingResult.hasErrors()) {
+//            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.OK);
+//        }
         employeeService.createNewEmployee(employeeDto);
         logger.debug(" Create employee success !");
         return new ResponseEntity<Void>(HttpStatus.CREATED);

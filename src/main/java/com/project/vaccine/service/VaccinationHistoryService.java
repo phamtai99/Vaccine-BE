@@ -26,6 +26,8 @@ public interface VaccinationHistoryService {
 
     List<VaccinationHistory> findAll();
 
+    List<String> getAllEmailToSend(Integer vaccinationId);
+
     List<String> getAllEmailToSend();
 
     List<VaccinationForEmail> getAllVaccinationForEmail();

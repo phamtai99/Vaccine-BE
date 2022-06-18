@@ -6,6 +6,7 @@ import com.project.vaccine.dto.VaccinationUpdateDTO;
 import com.project.vaccine.entity.Location;
 import com.project.vaccine.entity.Vaccination;
 import com.project.vaccine.entity.Vaccine;
+import com.project.vaccine.service.AccountService;
 import com.project.vaccine.service.LocationService;
 import com.project.vaccine.service.VaccinationManagerService;
 import com.project.vaccine.service.VaccineService;
@@ -21,7 +22,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -38,6 +41,9 @@ public class VaccinationManagerController {
     private LocationService locationService;
     @Autowired
     private VaccineService vaccineService;
+
+    @Autowired
+    private AccountService accountService;
 
     /**
      *  Dùng để lấy danh sách vs phân trang sự kiện tiêm chủng định kỳ
@@ -104,13 +110,13 @@ public class VaccinationManagerController {
      * T Dùng để cập nhập thông tin sự kiện tiêm chủng định kỳ
      */
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Vaccination> updateVaccination(@PathVariable("id") Integer id, @RequestBody VaccinationUpdateDTO vaccinationManagerDto) {
+    public ResponseEntity<Vaccination> updateVaccination(@PathVariable("id") Integer id, @RequestBody VaccinationUpdateDTO vaccinationManagerDto) throws UnsupportedEncodingException, MessagingException {
         Vaccination currentVaccination = vaccinationManagerService.findByIdVaccinationManager(id);
         if (currentVaccination == null) {
             return new ResponseEntity<Vaccination>(HttpStatus.NOT_FOUND);
         }
         vaccinationManagerService.updateVaccinationManager(vaccinationManagerDto);
-
+//        accountService.sendInfoUpdateEmail(vaccinationManagerDto);
         return new ResponseEntity<Vaccination>(currentVaccination, HttpStatus.OK);
     }
 

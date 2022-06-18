@@ -161,6 +161,15 @@ public interface VaccinationHistoryRepository extends JpaRepository<VaccinationH
             "where vcs.dlte=false and  vcs.vh_status  is null or vcs.vh_status= false) as lvs where lvs.date=curdate()+1  ", nativeQuery = true)
     List<VaccinationForEmail> getAllVaccinationForEmailToSend();
 
+
+    @Query(value = "select email from (select vc.vaccination_id as vaccinationId,vaccine.name as nameVaccine,vcs.email, vcs.name, lc.name as location      " +
+                    "from (  select vh.status as vh_status , vh.delete_flag as dlte, vh.vaccination_id as vc_id, patient.email, patient.name    " +
+                    "from  vaccination_history as vh join patient on patient.patient_id = vh.patient_id where   patient.delete_flag=false ) as vcs      " +
+                    "join vaccination as vc on vc.vaccination_id = vcs.vc_id  join vaccine on vc.vaccine_id=vaccine.vaccine_id  join location as lc on lc.location_id=vc.location_id     " +
+                    "where vcs.dlte=false and  vcs.vh_status  is null or vcs.vh_status= false) as lvs  where lvs.vaccinationId= ?1 "
+                    , nativeQuery = true)
+    List<String> getEmailForUpdateVaccination(Integer vaccinationId);
+    
     @Query(value = "select email from ( " +
             "select  vc.date, patient.email " +
             "from vaccination as vc " +

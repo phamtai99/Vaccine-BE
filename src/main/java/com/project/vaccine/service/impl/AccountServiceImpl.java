@@ -1,6 +1,7 @@
 package com.project.vaccine.service.impl;
 
 import com.project.vaccine.dto.PeriodicalVaccinationTempRegisterDTO;
+import com.project.vaccine.dto.VaccinationUpdateDTO;
 import com.project.vaccine.entity.Account;
 import com.project.vaccine.entity.Patient;
 import com.project.vaccine.entity.Vaccination;
@@ -10,6 +11,7 @@ import com.project.vaccine.repository.PatientRepository;
 import com.project.vaccine.repository.VaccinationHistoryRepository;
 import com.project.vaccine.repository.VaccinationRepository;
 import com.project.vaccine.service.AccountService;
+import com.project.vaccine.service.VaccinationHistoryService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,6 +31,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     JavaMailSender javaMailSender;
+
+    @Autowired
+    private VaccinationHistoryService vaccinationHistoryService;
 
     @Autowired
     private VaccinationRepository vaccinationRepository;
@@ -185,6 +190,44 @@ public class AccountServiceImpl implements AccountService {
                 "<br><br>\n" +
                 "<p style=\"font-style: italic; color: red\">Trong trường hợp bạn không thể tham gia vì lý do nào đó, bạn có thể hủy đăng ký bằng link bên dưới:</p>\n" +
                 "<h3><a href='" + cancelRegisterUrl + "'>Link hủy đăng ký!</a></h3>" +
+                "<p>TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI KÍNH BÁO</p>";
+        helper.setText(mailContent, true);
+        javaMailSender.send(message);
+    }
+
+    @Override
+    public void sendInfoUpdateEmail(VaccinationUpdateDTO updateVaccination) throws MessagingException, UnsupportedEncodingException {
+
+        Vaccination vaccination = this.vaccinationRepository.getOne(updateVaccination.getVaccinationId());
+
+        String subject = "Cập nhật Thông tin đăng ký tiêm chủng của bạn";
+        List<String> listEmails=this.vaccinationHistoryService.getAllEmailToSend(updateVaccination.getVaccinationId());
+        String[] array = listEmails.toArray(new String[0]);
+        String mailContent = "";
+
+        String locationName= this.vaccinationRepository.getLocation(updateVaccination.getVaccinationId());
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+        helper.setTo(array);
+        helper.setFrom("taipt3351@gmail.com","TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI");
+        helper.setSubject(subject);
+        mailContent =
+                "<span style=\"font-weight: bold\">TRUNG TÂM Y TẾ thông báo việc cập nhật lịch tiêm như sau: </span>\n" +
+                "<br><br>\n" +
+//                "<span style=\"font-weight: bold\"> "+patient.getName()+"</span> <span>vừa được đăng ký tiêm chủng định kỳ với thông tin sau:</span>\n" +
+//                "<br><br>\n" +
+                "<span style=\"font-weight: bold\"> Ngày tiêm chủng: </span><span>"+vaccination.getDate()+"</span>\n" +
+                "<br><br>\n" +
+                "<span style=\"font-weight: bold\"> Giờ tiêm chủng: </span><span>"+updateVaccination.getStartTime()+"  - "+updateVaccination.getEndTime()+"</span>\n" +
+                "<br><br>\n" +
+                "<span style=\"font-weight: bold\"> Địa điểm: </span><span> " +locationName+" </span>\n" +
+                "<br><br>\n" +
+                "<span style=\"font-weight: bold\"> Tên Vắc xin: </span><span>"+vaccination.getVaccine().getName()+" </span>\n" +
+                "<br><br>\n" +
+                "<span style=\"font-weight: bold\"> Xuất xứ: </span><span>"+vaccination.getVaccine().getOrigin()+" </span>\n" +
+                "<br><br>\n" +
+//                "<p style=\"font-style: italic; color: red\">Trong trường hợp bạn không thể tham gia vì lý do nào đó, bạn có thể hủy đăng ký bằng link bên dưới:</p>\n" +
+//                "<h3><a href='" + cancelRegisterUrl + "'>Link hủy đăng ký!</a></h3>" +
                 "<p>TRUNG TÂM Y TẾ DỰ PHÒNG HÀ NỘI KÍNH BÁO</p>";
         helper.setText(mailContent, true);
         javaMailSender.send(message);

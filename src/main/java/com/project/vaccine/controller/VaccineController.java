@@ -1,5 +1,6 @@
 package com.project.vaccine.controller;
 
+import com.project.vaccine.commons.EntityMapperDTO;
 import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.Provider;
 import com.project.vaccine.entity.Vaccine;
@@ -33,6 +34,15 @@ public class VaccineController {
     private StorageService storageService;
     @Autowired
     private ProviderService providerService;
+
+    private final EntityMapperDTO entityMapperDTO;
+
+    public VaccineController(EntityMapperDTO entityMapperDTO){
+        this.entityMapperDTO=entityMapperDTO;
+    }
+
+
+
 
     @GetMapping("/vaccines")
     public ResponseEntity<List<VaccineDTO>> getAllVaccine(@RequestParam int index) {
@@ -133,25 +143,27 @@ public class VaccineController {
      *  tim kiem nhan vien theo id
      */
     @GetMapping("/findVaccineByid/{id}")
-    public ResponseEntity<Vaccine> findById(@PathVariable Integer id) {
+    public ResponseEntity<VaccineFindIdDTO> findById(@PathVariable Integer id) {
         System.out.println(id);
 //        VaccineFindIdDTO vaccine=new VaccineFindIdDTO();
-//        VaccineFindIdDTO  vaccine = vaccineService.findVaccineById(id);
-        Vaccine vaccine =new Vaccine();
-        vaccine = vaccineService.findById(id);
+        VaccineFindIdDTO  vaccine = vaccineService.findVaccineById(id);
+//        Vaccine vaccine =new Vaccine();
+//        vaccine = vaccineService.findById(id);
         if (vaccine == null) {
-            return new ResponseEntity<Vaccine>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<VaccineFindIdDTO>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<Vaccine>(vaccine, HttpStatus.OK);
+        return new ResponseEntity<VaccineFindIdDTO>(vaccine, HttpStatus.OK);
     }
 
 
     @PutMapping("/edit-vaccine")
-    public ResponseEntity<?> editVaccine(@RequestBody Vaccine VaccineEditDTO) {
-        vaccineService.editVaccine(VaccineEditDTO);
-//        vaccineTypeService.editVaccineType(VaccineEditDTO.getVaccineType(), VaccineEditDTO.getVaccineType());
-//        invoiceService.editInvoice(VaccineEditDTO.getPrice(), VaccineEditDTO.getId());
-//        storageService.editStorage(VaccineEditDTO.getQuantity(), VaccineEditDTO.getId());
+    public ResponseEntity<?> editVaccine(@RequestBody VaccineFindDTO VaccineEditDTO) {
+
+        final Vaccine vaccine =entityMapperDTO.mappFromVaccineDTO(VaccineEditDTO);
+        vaccineService.editVaccine(vaccine);
+        vaccineTypeService.editVaccineType(VaccineEditDTO.getVaccineTypeId(), VaccineEditDTO.getVaccineType());
+        invoiceService.editInvoice(VaccineEditDTO.getPrice(), VaccineEditDTO.getVaccineId());
+        storageService.editStorage(VaccineEditDTO.getQuantity(), VaccineEditDTO.getVaccineId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
