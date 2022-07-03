@@ -29,8 +29,8 @@ public class MailerController {
 
     @Autowired
     private VaccinationHistoryService vaccinationHistoryService;
-
-    @Scheduled(cron = "0 59 23 * * ?")
+//  gửi mail nhắc nhở lịch tiêm trước 1 ngày
+    @Scheduled(cron = "0 30 8 * * ?")
     public void sendEmail() throws MessagingException, UnsupportedEncodingException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         // plusDay(1): cộng thêm 1 ngày để gửi mail lịch nhắc tiêm ngày hôm sau
