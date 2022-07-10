@@ -221,7 +221,7 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
         String subject = "Thông tin đăng ký tiêm chủng của bạn";
         String mailContent = "";
         String cancelRegisterUrl = "http://localhost:4200/cancel-register?code=" + randomCode;
-
+        String locationName= this.vaccinationRepository.getLocation(vaccination.getVaccinationId());
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
         helper.setTo(patientTemp.getEmail());
@@ -235,7 +235,7 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
                 "<br>\n" +
                 "<span style=\"font-weight: bold\"> Giờ tiêm chủng: </span><span>" + vaccination.getStartTime() + "  - " + vaccination.getEndTime() + "</span>\n" +
                 "<br>\n" +
-                "<span style=\"font-weight: bold\"> Địa điểm: </span><span>" + vaccination.getLocation().getName() + " </span>\n" +
+                "<span style=\"font-weight: bold\"> Địa điểm: </span><span>" + locationName + " </span>\n" +
                 "<br>\n" +
                 "<span style=\"font-weight: bold\"> Tên Vắc xin: </span><span>" + vaccineTemp.getName() + " </span>\n" +
                 "<br>\n" +
@@ -260,6 +260,18 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
             logger.error(" Lỗi getVaccineId :" + ex);
         }
         return vaccineId;
+    }
+
+    @Override
+    public String getLocationName(int vaccinationId) {
+        String locationName=null;
+        try{
+            locationName= this.vaccinationRepository.getLocation(vaccinationId);
+        }catch( Exception ex){
+            logger.error(" Lỗi getLocationName : "+ ex);
+        }
+
+        return locationName;
     }
 
     @Override

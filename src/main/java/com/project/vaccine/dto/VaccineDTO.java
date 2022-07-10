@@ -8,7 +8,7 @@ public interface VaccineDTO {
     String getLicenseCode();
     String getOrigin();
     Double getDosage();
-    Integer getShipmentNumber();
+    Integer getPrice();
     String getExpired();
     String getMaintenance();
     String getAge();

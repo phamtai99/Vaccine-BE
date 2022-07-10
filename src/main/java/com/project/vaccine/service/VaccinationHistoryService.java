@@ -90,4 +90,6 @@ public interface VaccinationHistoryService {
 
 
     Integer getVaccineId(int vaccinationId);
+
+    String getLocationName(int vaccinationId);
 }

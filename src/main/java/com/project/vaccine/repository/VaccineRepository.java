@@ -54,11 +54,12 @@ public interface VaccineRepository extends JpaRepository<Vaccine, Integer> {
     List<VaccineDTO> getAllVaccineDTO(int index);
 
     @Query(value = "SELECT vaccine.vaccine_id as id,vaccine.name as name, vaccine_type.name as vaccineType,vaccine.times , " +
-            "vaccine.license_code as licenseCode, vaccine.origin as origin, vaccine.dosage as dosage," +
+            "vaccine.license_code as licenseCode, vaccine.origin as origin, vaccine.dosage as dosage, invoice.price, " +
             "vaccine.expired as expired, vaccine.maintenance as maintenance, vaccine.age as age, storage.quantity as quantity" +
             " FROM vaccine " +
             " join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
             " join storage on storage.vaccine_id = vaccine.vaccine_id " +
+            " join invoice on vaccine.vaccine_id=invoice.vaccine_id  "+
             "WHERE vaccine.delete_flag = 0 " +
             "group by vaccine.vaccine_id", nativeQuery = true)
     List<VaccineDTO> getAllVaccineDTONotPagination();
@@ -78,11 +79,12 @@ public interface VaccineRepository extends JpaRepository<Vaccine, Integer> {
 
     @Query(value = "select * from ( " +
             "SELECT vaccine.vaccine_id as id,vaccine.name as name, vaccine_type.name as vaccineType,vaccine.times , " +
-            "vaccine.license_code as licenseCode, vaccine.origin as origin, vaccine.dosage as dosage," +
+            "vaccine.license_code as licenseCode, vaccine.origin as origin, vaccine.dosage as dosage, invoice.price,  " +
             "vaccine.expired as expired, vaccine.maintenance as maintenance, vaccine.age as age, storage.quantity as quantity" +
             " FROM vaccine " +
             " join vaccine_type on vaccine.vaccine_type_id = vaccine_type.vaccine_type_id " +
             " join storage on storage.vaccine_id = vaccine.vaccine_id " +
+            " join invoice on vaccine.vaccine_id=invoice.vaccine_id  "+
             "WHERE vaccine.delete_flag = 0 " +
             "group by vaccine.vaccine_id) as vc "+
             "where vc.name like ?1  " +
