@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins ="*", allowedHeaders = "*", maxAge = 3600)
 @RequestMapping("/api/public/vaccination")
 public class VaccinationController {
 

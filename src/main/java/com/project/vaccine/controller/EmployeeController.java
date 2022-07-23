@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 @RequestMapping("/api/public")
 public class EmployeeController {
 

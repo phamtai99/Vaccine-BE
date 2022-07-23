@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 
 @RequestMapping("/api/public")
 public class VaccinationHistoryController {

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/public")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 public class ImportExportController {
     @Autowired
     private ImportAndExportService importAndExportService;

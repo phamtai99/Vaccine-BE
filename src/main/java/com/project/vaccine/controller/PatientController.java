@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/public/")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins ="*", allowedHeaders = "*")
 public class PatientController {
     @Autowired
     private PatientService patientService;
