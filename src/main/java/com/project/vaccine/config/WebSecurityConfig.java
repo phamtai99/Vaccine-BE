@@ -45,9 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and()
-                .csrf()
-                .disable()
+        http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/public/**")
                 .permitAll()
@@ -55,9 +53,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("api/admin/**").hasAnyRole("ADMIN","YTA")
                 .anyRequest()
                 .authenticated()
+                .and().cors()
+                .and().headers().frameOptions().disable()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().headers().httpStrictTransportSecurity().includeSubDomains(true).maxAgeInSeconds( 31536000);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
@@ -66,7 +67,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-//        configuration.setAllowedOrigins(Arrays.asList("https://java-vaccine-systerm.herokuapp.com/"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
