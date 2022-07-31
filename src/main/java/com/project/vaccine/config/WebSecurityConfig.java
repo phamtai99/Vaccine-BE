@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,7 +23,10 @@ import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Autowired
     private AccountDetailServiceImpl accountService;
@@ -48,17 +52,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/public/**")
+                .antMatchers("/login","/signup","/api/public/vaccination/get-custom-list",
+                        "/api/public/vaccination/time-list","/api/public/vaccination/age-list"
+                ,"/api/public/vaccines-not-pagination")
                 .permitAll()
                 .antMatchers("/api/user/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("api/admin/**").hasAnyRole("ADMIN","YTA")
                 .anyRequest()
                 .authenticated()
+                .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and().cors()
-                .and().headers().frameOptions().disable()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().headers().httpStrictTransportSecurity().includeSubDomains(true).maxAgeInSeconds( 31536000);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }

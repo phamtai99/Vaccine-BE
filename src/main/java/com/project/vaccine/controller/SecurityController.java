@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/public")
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SecurityController {
     private static Logger logger= LogManager.getLogger(SecurityController.class);
