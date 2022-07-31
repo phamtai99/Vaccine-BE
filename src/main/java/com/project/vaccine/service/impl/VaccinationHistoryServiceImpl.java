@@ -1,5 +1,6 @@
 package com.project.vaccine.service.impl;
 
+import com.project.vaccine.common.MyConstants;
 import com.project.vaccine.controller.VaccinationController;
 import com.project.vaccine.dto.*;
 import com.project.vaccine.entity.Patient;
@@ -220,7 +221,7 @@ public class VaccinationHistoryServiceImpl implements VaccinationHistoryService 
         randomCode.append(vaccination.getVaccinationId()).append("|").append(vaccinationByRequestDTO.getPatientId());
         String subject = "Thông tin đăng ký tiêm chủng của bạn";
         String mailContent = "";
-        String cancelRegisterUrl = "http://localhost:4200/cancel-register?code=" + randomCode;
+        String cancelRegisterUrl = MyConstants.CONST+ "cancel-register?code=" + randomCode;
         String locationName= this.vaccinationRepository.getLocation(vaccination.getVaccinationId());
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");

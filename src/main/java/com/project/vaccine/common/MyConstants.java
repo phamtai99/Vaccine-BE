@@ -9,4 +9,7 @@ public class MyConstants {
 
     // And receiver!
     public static final String MAIL_RECEIVER= "";
+
+//    public  static   final String CONST="http://localhost:4200/";
+    public  static   final String CONST="https://vaccinebk.netlify.app/";
 }

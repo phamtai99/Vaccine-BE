@@ -1,5 +1,6 @@
 package com.project.vaccine.service.impl;
 
+import com.project.vaccine.common.MyConstants;
 import com.project.vaccine.dto.PeriodicalVaccinationTempRegisterDTO;
 import com.project.vaccine.dto.VaccinationUpdateDTO;
 import com.project.vaccine.entity.Account;
@@ -64,6 +65,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
+
+
+
     @Override
     public void addNew(String username, String password) {
 //        accountRepository.addNewAccount(username, password);
@@ -113,7 +117,7 @@ public class AccountServiceImpl implements AccountService {
     public void sendVerificationEmail(String userName, String randomCode, String email) throws MessagingException, UnsupportedEncodingException {
         String subject = "Hãy xác thực email của bạn";
         String mailContent = "";
-        String confirmUrl = "http://localhost:4200/verification?code=" + randomCode;
+        String confirmUrl = MyConstants.CONST + "verification?code=" + randomCode;
 
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -131,7 +135,7 @@ public class AccountServiceImpl implements AccountService {
     public void sendVerificationEmailForResetPassWord(String userName, String randomCode, String email) throws MessagingException, UnsupportedEncodingException {
         String subject = "Hãy xác thực email của bạn";
         String mailContent = "";
-        String confirmUrl = "http://localhost:4200/verify-reset-password?code=" + randomCode;
+        String confirmUrl = MyConstants.CONST+"verify-reset-password?code=" + randomCode;
 
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -167,7 +171,7 @@ public class AccountServiceImpl implements AccountService {
         randomCode.append(register.getVaccinationId()).append("|").append(register.getPatientId());
         String subject = "Thông tin đăng ký tiêm chủng của bạn";
         String mailContent = "";
-        String cancelRegisterUrl = "http://localhost:4200/cancel-register?code=" + randomCode;
+        String cancelRegisterUrl = MyConstants.CONST+"cancel-register?code=" + randomCode;
         String locationName= this.vaccinationRepository.getLocation(register.getVaccinationId());
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
